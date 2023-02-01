@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1096229276091",
+    "project_id": "gait-analysis-8a05a",
+    "storage_bucket": "gait-analysis-8a05a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1096229276091:android:06f12e49a86d66ed911c9e",
+        "android_client_info": {
+          "package_name": "com.example.gait_analysis"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1096229276091-9jqf3902s4u5tl30m2ud96jibavta24t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCQiTm9M4ZJbzvk17a-U68fLyhr5ra1h-E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1096229276091-9jqf3902s4u5tl30m2ud96jibavta24t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
