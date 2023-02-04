@@ -29,6 +29,49 @@
             {
               "client_id": "1096229276091-9jqf3902s4u5tl30m2ud96jibavta24t.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "1096229276091-24up40oqvhltf2cd3jb23c6lq8rjmcu7.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.gaitAnalysis"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1096229276091:android:e96f8c59c7aee8b1911c9e",
+        "android_client_info": {
+          "package_name": "com.example.loginauth"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1096229276091-9jqf3902s4u5tl30m2ud96jibavta24t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCQiTm9M4ZJbzvk17a-U68fLyhr5ra1h-E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1096229276091-9jqf3902s4u5tl30m2ud96jibavta24t.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1096229276091-24up40oqvhltf2cd3jb23c6lq8rjmcu7.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.gaitAnalysis"
+              }
             }
           ]
         }
