@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class Patient{
+  // Image patientImage;
   String patientName;
-  String patientID;
+  // String patientID;
   String patientPhoneNumber;
   String patientAddress;
   String patientDOB;
   String patientGender;
   String patientHeight;
   String patientWeight;
-  Patient({required this.patientName,required this.patientID,required this.patientPhoneNumber,required this.patientAddress,required this.patientDOB,required this.patientGender,required this.patientHeight,required this.patientWeight});
+  Patient({required this.patientName,required this.patientPhoneNumber,required this.patientAddress,required this.patientDOB,required this.patientGender,required this.patientHeight,required this.patientWeight});
+  // Patient({required this.patientName,required this.patientID,required this.patientPhoneNumber,required this.patientAddress,required this.patientDOB,required this.patientGender,required this.patientHeight,required this.patientWeight});
 }

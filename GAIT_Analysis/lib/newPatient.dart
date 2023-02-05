@@ -1,10 +1,17 @@
 // import 'dart:js_util';
+// import 'dart:html';
 
+// import 'dart:html';
 
+// import 'package:firebase/firebase.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import './models/patients.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
+import 'package:path/path.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 class NewPatientForm extends StatefulWidget {
   const NewPatientForm ({super.key});
 
@@ -25,12 +32,17 @@ class NewPatientFormState extends State <NewPatientForm> {
   late final TextEditingController pN;
   late final TextEditingController pPN;
   late final TextEditingController pW;
+
+  // ImagePicker picker = ImagePicker();
+  XFile? _image;
+  late File  imagefile;
+
   void initState() {
     pA = TextEditingController();
     pG = TextEditingController();
     pD = TextEditingController();
     pH = TextEditingController();
-    pID = TextEditingController();
+    // pID = TextEditingController();
     pN = TextEditingController();
     pPN = TextEditingController();
     pW = TextEditingController();
@@ -45,23 +57,44 @@ class NewPatientFormState extends State <NewPatientForm> {
     pG.dispose();
     pD.dispose();
     pH.dispose();
-    pID.dispose();
+    // pID.dispose();
     pN.dispose();
     pPN.dispose();
     pW.dispose();// TODO: implement dispose
     super.dispose();
   }
   String dropdownValue = 'Choose an option';
-  Patient patient = Patient(patientAddress: '', patientGender: '', patientDOB: '', patientHeight:'', patientID: '', patientName: '', patientPhoneNumber: '', patientWeight: '',);
+  Patient patient = Patient(patientAddress: '', patientGender: '', patientDOB: '', patientHeight:'', patientName: '', patientPhoneNumber: '', patientWeight: '',);
+  // Patient patient = Patient(patientAddress: '', patientGender: '', patientDOB: '', patientHeight:'', patientID: '', patientName: '', patientPhoneNumber: '', patientWeight: '',);
   @override
   Widget build(BuildContext context) {
     CollectionReference users = FirebaseFirestore.instance.collection('patients');
+    Future getImage() async {
+      XFile? image = await ImagePicker().pickImage(source: ImageSource.gallery);
+      imagefile = File(image!.path);
+
+      setState(() {
+        _image = image!;
+        print('Image Path $_image');
+      });
+    }
+
+    Future uploadPic(BuildContext context) async{
+      String fileName = basename(_image!.path);
+      // StorageReference firebaseStorageRef = FirebaseStorage.instance.ref().child(fileName);
+      // StorageUploadTask uploadTask = firebaseStorageRef.putFile(_image);
+      // StorageTaskSnapshot taskSnapshot=await uploadTask.onComplete;
+      setState(() {
+        print("Profile Picture uploaded");
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Profile Picture Uploaded')));
+      });
+    }
     Future<void> addUser() {
       // Call the user's CollectionReference to add a new user
       return users
           .add({
         'name': pN.text, // John Doe
-        'id': pID.text,
+        // 'id': pID.text,
         'gender': patient.patientGender,// Stokes and Sons
         'dob': pD.text,
         'height': pH.text,
@@ -73,17 +106,54 @@ class NewPatientFormState extends State <NewPatientForm> {
           .catchError((error) => print("Failed to add user: $error"));
     }
     return Scaffold(
+      appBar:AppBar(
+        title: Text('Add New Patient')
+      ),
       body:SingleChildScrollView(
       child: Form(
       key: _formKey,
       child: Column(children: <Widget>[
-        GestureDetector(
-          onTap:(){
-            print('Upload Image');
-          },
-          child: CircleAvatar(
-            radius: 110,
-          ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children:<Widget> [
+            Align(
+              alignment: Alignment.center ,
+              child : CircleAvatar(
+                radius : 80,
+                backgroundColor: Colors.black,
+                child: ClipOval(
+                  // ignore: unnecessary_new
+                  child : new SizedBox(
+                    width: 180.0,
+                    height: 240.0,
+                    child: (_image!=null)?Image.file(
+                     imagefile ,
+                     fit: BoxFit.fill,
+                    ):Image.network("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
+                    ),
+                  ),
+                 ),
+                ),
+                ),
+            Container(
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child :Padding(
+                  padding: EdgeInsets.only(top:150.0),
+                  child: IconButton(
+                    icon: Icon(
+                      FontAwesomeIcons.camera,
+                      size: 25.0,
+                      color: Colors.black38,
+                    ),
+                    onPressed:(){
+                      getImage();
+                    },
+                  ),
+                ),
+              ),
+            ),    
+          ],
         ),
         TextFormField(
           decoration: const InputDecoration(
@@ -97,18 +167,18 @@ class NewPatientFormState extends State <NewPatientForm> {
             return (value!.isEmpty) ?'This field is mandatory':null;
           }
         ),
-        TextFormField(
-          decoration: const InputDecoration(
-            labelText: 'Patient ID*',
-          ),
-          // onSaved: (String? value){
-          //   patient.patientID = value!;
-          // },
-            controller: pID,
-          validator: (String? value){
-            return (value!.isEmpty) ?'This field is mandatory':null;
-          }
-        ),
+        // TextFormField(
+        //   decoration: const InputDecoration(
+        //     labelText: 'Patient ID*',
+        //   ),
+        //   // onSaved: (String? value){
+        //   //   patient.patientID = value!;
+        //   // },
+        //     controller: pID,
+        //   validator: (String? value){
+        //     return (value!.isEmpty) ?'This field is mandatory':null;
+        //   }
+        // ),
         TextFormField(
             decoration:const InputDecoration(
             labelText: 'Enter Patient Phone Number',
@@ -204,7 +274,7 @@ class NewPatientFormState extends State <NewPatientForm> {
                   const SnackBar(content: Text('Processing Data')),
                 );
                 patient.patientName=pN.text;
-                patient.patientID=pID.text;
+                // patient.patientID=pID.text;
                 patient.patientGender=pG.text;
                 patient.patientAddress=pA.text;
                 patient.patientDOB=pD.text;
@@ -214,7 +284,7 @@ class NewPatientFormState extends State <NewPatientForm> {
 
 
               print("Patient Name:" + patient.patientName);
-              print("Patient ID:" + patient.patientID);
+              // print("Patient ID:" + patient.patientID);
               print("Patient Phone Number: " + patient.patientPhoneNumber.toString());
               print("Patient Address:" + patient.patientAddress);
               print("Patient DOB:" + patient.patientDOB);
