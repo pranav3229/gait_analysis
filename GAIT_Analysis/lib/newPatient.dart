@@ -12,6 +12,9 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:path/path.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:dropdown_search/dropdown_search.dart';
+
+
 class NewPatientForm extends StatefulWidget {
   const NewPatientForm ({super.key});
 
@@ -102,7 +105,7 @@ class NewPatientFormState extends State <NewPatientForm> {
         'phone':pPN.text,
         'weight':pW.text,// 42
       })
-          .then((value) => print("User Added"))
+          .then((value) => print('User Added'))//('User Added')
           .catchError((error) => print("Failed to add user: $error"));
     }
     return Scaffold(
@@ -220,8 +223,11 @@ class NewPatientFormState extends State <NewPatientForm> {
               labelText: 'Enter Gender'
             ),
             onChanged:(String? newValue){
+              patient.patientGender = newValue!;
               setState( () {
+                //print(newValue);
                 dropdownValue = newValue!;
+                //print(dropdownValue);
                 patient.patientGender=dropdownValue;
               });
             },
@@ -233,9 +239,9 @@ class NewPatientFormState extends State <NewPatientForm> {
                 )
               );
             }).toList(),
-          //   onSaved: (String? value){
-          //     patient.patientGender = value!;
-          // }
+            onSaved: (String? value){
+              patient.patientGender = value!;
+          }
 
           ),
           TextFormField(
@@ -288,7 +294,7 @@ class NewPatientFormState extends State <NewPatientForm> {
               print("Patient Phone Number: " + patient.patientPhoneNumber.toString());
               print("Patient Address:" + patient.patientAddress);
               print("Patient DOB:" + patient.patientDOB);
-              print("Patient Gender:" + patient.patientGender);
+              print("Patient Gender:" + dropdownValue );//patient.patientGender
               print("Patient Height:" + patient.patientHeight.toString());
               print("Patient Weight:" + patient.patientWeight.toString());
               }
