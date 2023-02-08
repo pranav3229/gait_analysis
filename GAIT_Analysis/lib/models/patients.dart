@@ -3,6 +3,7 @@ import 'package:image_picker/image_picker.dart';
 
 class Patient{
   // Image patientImage;
+  String profImageUrl;
   String patientName;
   // String patientID;
   String patientPhoneNumber;
@@ -11,6 +12,6 @@ class Patient{
   String patientGender;
   String patientHeight;
   String patientWeight;
-  Patient({required this.patientName,required this.patientPhoneNumber,required this.patientAddress,required this.patientDOB,required this.patientGender,required this.patientHeight,required this.patientWeight});
+  Patient({required this.profImageUrl,required this.patientName,required this.patientPhoneNumber,required this.patientAddress,required this.patientDOB,required this.patientGender,required this.patientHeight,required this.patientWeight});
   // Patient({required this.patientName,required this.patientID,required this.patientPhoneNumber,required this.patientAddress,required this.patientDOB,required this.patientGender,required this.patientHeight,required this.patientWeight});
 }

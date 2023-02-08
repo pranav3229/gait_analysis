@@ -4,8 +4,12 @@
 // import 'dart:html';
 
 // import 'package:firebase/firebase.dart';
+// import 'package:firebase/firebase.dart';
+// import 'package:firebase/firebase.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:permission_handler/permission_handler.dart';
 import './models/patients.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
@@ -13,6 +17,9 @@ import 'dart:io';
 import 'package:path/path.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:dropdown_search/dropdown_search.dart';
+import 'package:path/path.dart' as Path;
+
+import 'homescreen.dart';
 
 
 class NewPatientForm extends StatefulWidget {
@@ -67,7 +74,7 @@ class NewPatientFormState extends State <NewPatientForm> {
     super.dispose();
   }
   String dropdownValue = 'Choose an option';
-  Patient patient = Patient(patientAddress: '', patientGender: '', patientDOB: '', patientHeight:'', patientName: '', patientPhoneNumber: '', patientWeight: '',);
+  Patient patient = Patient(patientAddress: '', patientGender: '', patientDOB: '', patientHeight:'', patientName: '', patientPhoneNumber: '', patientWeight: '', profImageUrl: '',);
   // Patient patient = Patient(patientAddress: '', patientGender: '', patientDOB: '', patientHeight:'', patientID: '', patientName: '', patientPhoneNumber: '', patientWeight: '',);
   @override
   Widget build(BuildContext context) {
@@ -81,33 +88,95 @@ class NewPatientFormState extends State <NewPatientForm> {
         print('Image Path $_image');
       });
     }
-
-    Future uploadPic(BuildContext context) async{
-      String fileName = basename(_image!.path);
-      // StorageReference firebaseStorageRef = FirebaseStorage.instance.ref().child(fileName);
-      // StorageUploadTask uploadTask = firebaseStorageRef.putFile(_image);
-      // StorageTaskSnapshot taskSnapshot=await uploadTask.onComplete;
-      setState(() {
-        print("Profile Picture uploaded");
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Profile Picture Uploaded')));
-      });
-    }
+    // uploadImage(File imagefile) async {
+    //   final _firebaseStorage = FirebaseStorage.instance;
+    //   final _imagePicker = ImagePicker();
+    //   PickedFile? image;
+    //   //Check Permissions
+    //   // await Permission.photos.request();
+    //   //
+    //   // var permissionStatus = await Permission.photos.status;
+    //
+    //   {
+    //     //Select Image
+    //     image = await _imagePicker.getImage(source: ImageSource.gallery);
+    //     var file = File(image!.path);
+    //
+    //     if (image != null){
+    //       //Upload to Firebase
+    //       var snapshot = await _firebaseStorage.ref();
+    //       snapshot.child('images/imageName').putFile(file).whenComplete;
+    //           // .child('images/imageName')
+    //           // .putFile(file).whenComplete;
+    //
+    //       var downloadUrl = await snapshot.getDownloadURL();
+    //       setState(() {
+    //         var imageUrl = downloadUrl;
+    //       });
+    //     } else {
+    //       print('No Image Path Received');
+    //     }
+    //   } {
+    //     print('Permission not granted. Try Again with permission access');
+    //   }
+    // }
     Future<void> addUser() {
+      // patient.profImageUrl=uploadPic(imagefile) as String;
       // Call the user's CollectionReference to add a new user
       return users
           .add({
+        'profile picture URL': patient.profImageUrl,
         'name': pN.text, // John Doe
         // 'id': pID.text,
-        'gender': patient.patientGender,// Stokes and Sons
+        'gender': dropdownValue,// Stokes and Sons
         'dob': pD.text,
         'height': pH.text,
         'name':pN.text,
         'phone':pPN.text,
         'weight':pW.text,// 42
       })
-          .then((value) => print('User Added'))//('User Added')
+          .then((value) =>{ print('User Added'),
+        Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+                builder: (context) =>
+                    homescreen()))
+
+      })//('User Added')
           .catchError((error) => print("Failed to add user: $error"));
     }
+
+    uploadPic(File _image1) async {
+      FirebaseStorage storage = FirebaseStorage.instance;
+      // String url='';
+      final ref = storage.ref();
+      final spaceref=ref.child("images/${patient.patientName}.jpg");
+      UploadTask uploadTask = spaceref.putFile(_image1);
+      uploadTask.whenComplete(()async {
+        print('uploaded successfully');
+        setState(() async{
+          patient.profImageUrl=await spaceref.getDownloadURL() as String;
+          addUser();
+        });
+
+
+      }).catchError((onError) {
+        print(onError);
+      });
+
+
+    }
+
+    // Future uploadPic(BuildContext context) async{
+    //   String fileName = basename(_image!.path);
+    //   // StorageReference firebaseStorageRef = FirebaseStorage.instance.ref().child(fileName);
+    //   // StorageUploadTask uploadTask = firebaseStorageRef.putFile(_image);
+    //   // StorageTaskSnapshot taskSnapshot=await uploadTask.onComplete;
+    //   setState(() {
+    //     print("Profile Picture uploaded");
+    //     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Profile Picture Uploaded')));
+    //   });
+    // }
+
     return Scaffold(
       appBar:AppBar(
         title: Text('Add New Patient')
@@ -274,11 +343,18 @@ class NewPatientFormState extends State <NewPatientForm> {
           ),
           ElevatedButton(
             onPressed:() async{
-              addUser();
+              uploadPic(imagefile);
+
+              // print(uploadPic(imagefile));
+
+
               if (_formKey.currentState!.validate()){
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('Processing Data')),
                 );
+
+
+                // sleep(Duration(seconds: 5));
                 patient.patientName=pN.text;
                 // patient.patientID=pID.text;
                 patient.patientGender=pG.text;
@@ -287,6 +363,10 @@ class NewPatientFormState extends State <NewPatientForm> {
                 patient.patientHeight=pH.text;
                 patient.patientWeight=pW.text;
                 patient.patientPhoneNumber=pPN.text;
+
+                sleep(Duration(seconds: 5));
+
+                print("Patient profile pic URL: "+patient.profImageUrl);
 
 
               print("Patient Name:" + patient.patientName);
@@ -297,6 +377,7 @@ class NewPatientFormState extends State <NewPatientForm> {
               print("Patient Gender:" + dropdownValue );//patient.patientGender
               print("Patient Height:" + patient.patientHeight.toString());
               print("Patient Weight:" + patient.patientWeight.toString());
+
               }
             },
             child: const Text('Add Patient'),

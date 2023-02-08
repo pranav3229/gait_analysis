@@ -51,7 +51,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyCQiTm9M4ZJbzvk17a-U68fLyhr5ra1h-E',
-    appId: '1:1096229276091:android:06f12e49a86d66ed911c9e',
+    appId: '1:1096229276091:android:af4af0f959ea1cbd911c9e',
     messagingSenderId: '1096229276091',
     projectId: 'gait-analysis-8a05a',
     storageBucket: 'gait-analysis-8a05a.appspot.com',
@@ -59,7 +59,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyAE56V1aWugBtCasXWNUd84ghhJxeKY1fY',
-    appId: '1:1096229276091:ios:76312fd6d1da3369911c9e',
+    appId: '1:1096229276091:ios:267cf7e1b9a7d50c911c9e',
     messagingSenderId: '1096229276091',
     projectId: 'gait-analysis-8a05a',
     storageBucket: 'gait-analysis-8a05a.appspot.com',
