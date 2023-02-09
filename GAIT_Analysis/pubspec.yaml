@@ -47,6 +47,7 @@ dependencies:
   firebase_app_check: ^0.1.1+9
   permission_handler: ^10.2.0
   material: ^1.0.0+2
+  flutter_easyloading: ^3.0.5
 
 dev_dependencies:
   flutter_test:

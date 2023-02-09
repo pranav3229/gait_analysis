@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'homescreen.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -65,15 +68,19 @@ class _MyHomePageState extends State<MyHomePage> {
     password.dispose(); // TODO: implement dispose
     super.dispose();
   }
+  bool yeet=false;
 
 
   @override
   Widget build(BuildContext context) {
 
+
     return Scaffold(
       appBar: AppBar(
 
-        title: Text("Login"),
+        centerTitle: true,
+        backgroundColor: Colors.green,
+        title: Text('Login'),
       ),
       body: Center(
 
@@ -106,7 +113,14 @@ class _MyHomePageState extends State<MyHomePage> {
                 width:140,
                 height: 45,
 
-                child: ElevatedButton(onPressed: ()async{
+                child: ElevatedButton(
+                  style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.green)),
+                    onPressed: ()async{
+                    setState(() {
+                      yeet=true;
+                    });
+
+
                   try {
                     final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
                         email: username.text,
@@ -142,7 +156,13 @@ class _MyHomePageState extends State<MyHomePage> {
                 },
 
                     child: const Icon(Icons.login)),
+
               ),
+              SizedBox(height:20),
+              Visibility(
+                visible: yeet,
+                  child: CircularProgressIndicator())
+
 
 
 
