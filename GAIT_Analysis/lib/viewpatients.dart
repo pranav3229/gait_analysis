@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'package:firebase/firebase.dart';
 import 'package:flutter/material.dart';
+
+import 'homescreen.dart';
 class patientviewstless extends StatelessWidget {
   const patientviewstless({Key? key}) : super(key: key);
 
@@ -25,6 +27,16 @@ class _patientviewState extends State<patientview> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: BackButton(
+          onPressed: (){
+            Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                    builder: (context) =>
+                        homescreen()));
+          },
+          color: Colors.black
+        ),
+        centerTitle: true,
         backgroundColor: Colors.green,
         title: Text('View Patients'),
       ),
@@ -36,10 +48,35 @@ class _patientviewState extends State<patientview> {
               child: CircularProgressIndicator(),
             );
           }
+
           return ListView(
             children: snapshot.data!.docs.map((document) {
               return Container(
-                  child: Center(child: Text(document['name']))
+                height:125,
+                  child: InkWell(
+                    onTap:(){
+                      print(document.id);
+                      print(document['name']);
+
+
+
+
+                    },
+                    child: new Card(child: Center(child: Column(
+                      children: [
+                        SizedBox(height:25),
+                        Text(document['name']),
+                        SizedBox(height:35),
+                          Text('ID: ${document.id}'),
+                        
+
+
+
+
+
+                      ],
+                    ))),
+                  )
               );
             }).toList(),
           );

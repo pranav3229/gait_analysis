@@ -67,11 +67,14 @@ class NewPatientFormState extends State <NewPatientForm> {
     super.dispose();
   }
   String dropdownValue = 'Choose an option';
-  Patient patient = Patient(patientAddress: '', patientGender: '', patientDOB: '', patientHeight:'', patientName: '', patientPhoneNumber: '', patientWeight: '', profImageUrl: '',);
+  Patient patient = Patient(patientAddress: '', patientGender: '', patientDOB: '', patientHeight:'', patientName: '', patientPhoneNumber: '', patientWeight: '', profImageUrl: '',patientID: '');
   // Patient patient = Patient(patientAddress: '', patientGender: '', patientDOB: '', patientHeight:'', patientID: '', patientName: '', patientPhoneNumber: '', patientWeight: '',);
   @override
   Widget build(BuildContext context) {
     CollectionReference users = FirebaseFirestore.instance.collection('patients');
+    setState(() {
+      patient.patientID=users.id;
+    });
     Future getImage() async {
       XFile? image = await ImagePicker().pickImage(source: ImageSource.gallery);
       imagefile = File(image!.path);
@@ -114,12 +117,13 @@ class NewPatientFormState extends State <NewPatientForm> {
     //   }
     // }
     Future<void> addUser() {
-      // patient.profImageUrl=uploadPic(imagefile) as String;
+ // patient.profImageUrl=uploadPic(imagefile) as String;
       // Call the user's CollectionReference to add a new user
       return users
           .add({
         'profile picture URL': patient.profImageUrl,
-        'name': pN.text, // John Doe
+        'name': pN.text,
+
         // 'id': pID.text,
         'gender': dropdownValue,// Stokes and Sons
         'dob': pD.text,

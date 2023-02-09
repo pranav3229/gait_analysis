@@ -28,9 +28,9 @@ class _homescreenState extends State<homescreen> {
                 Row(
                   children: [
                     ElevatedButton(onPressed: ()async{
-                      // Navigator.of(context).pushReplacement(
-                      //     MaterialPageRoute(
-                      //         builder: (context) => NewPatientForm()));
+                      Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                              builder: (context) => NewPatientForm()));
 
                     },
                         child: Text('New Patient'),
