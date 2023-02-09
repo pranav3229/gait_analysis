@@ -68,7 +68,7 @@ class _patientviewState extends State<patientview> {
                         Text(document['name']),
                         SizedBox(height:35),
                           Text('ID: ${document.id}'),
-                        
+
 
 
 
