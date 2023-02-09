@@ -149,7 +149,7 @@ class NewPatientFormState extends State <NewPatientForm> {
       FirebaseStorage storage = FirebaseStorage.instance;
       // String url='';
       final ref = storage.ref();
-      final spaceref=ref.child("images/${patient.patientName}.jpg");
+      final spaceref=ref.child("images/${pN.text}.jpg");
       UploadTask uploadTask = spaceref.putFile(_image1);
       uploadTask.whenComplete(()async {
         print('uploaded successfully');
