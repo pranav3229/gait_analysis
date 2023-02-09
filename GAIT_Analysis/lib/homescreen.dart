@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gait_analysis/main.dart';
+import 'package:gait_analysis/viewpatients.dart';
 
 import 'newPatient.dart';
 class homescreen extends StatefulWidget {
@@ -27,15 +28,18 @@ class _homescreenState extends State<homescreen> {
                 Row(
                   children: [
                     ElevatedButton(onPressed: ()async{
-                      Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(
-                              builder: (context) => NewPatientForm()));
+                      // Navigator.of(context).pushReplacement(
+                      //     MaterialPageRoute(
+                      //         builder: (context) => NewPatientForm()));
 
                     },
                         child: Text('New Patient'),
                     ),
                     SizedBox(width:20),
                     ElevatedButton(onPressed: ()async{
+                      Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                              builder: (context) => const patientview()));
 
                     },
                       child: Text('View Patients'),

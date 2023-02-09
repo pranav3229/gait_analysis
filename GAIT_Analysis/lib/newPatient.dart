@@ -1,22 +1,15 @@
-// import 'dart:js_util';
-// import 'dart:html';
 
-// import 'dart:html';
-
-// import 'package:firebase/firebase.dart';
-// import 'package:firebase/firebase.dart';
-// import 'package:firebase/firebase.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:permission_handler/permission_handler.dart';
+// import 'package:permission_handler/permission_handler.dart';
 import './models/patients.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
-import 'package:path/path.dart';
+// import 'package:path/path.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:dropdown_search/dropdown_search.dart';
+// import 'package:dropdown_search/dropdown_search.dart';
 import 'package:path/path.dart' as Path;
 
 import 'homescreen.dart';
