@@ -1,7 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:gait_analysis/homescreen.dart';
 import 'package:video_player/video_player.dart';
+
+import 'main.dart';
 
 class PreviewPage extends StatefulWidget {
   final String filePath;
@@ -39,6 +42,10 @@ class PreviewPageState extends State<PreviewPage> {
           IconButton(
             icon: const Icon(Icons.check),
             onPressed: () {
+              Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          homescreen()));
               print('do something with the file');
             },
           )

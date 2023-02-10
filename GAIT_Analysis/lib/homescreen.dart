@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gait_analysis/main.dart';
+import 'package:gait_analysis/scan.dart';
 import 'package:gait_analysis/viewpatients.dart';
 
 import 'newPatient.dart';
@@ -115,7 +116,24 @@ class _homescreenState extends State<homescreen> {
                   },
                     child: Text('Logout'),
                   ),
-                )
+                ),
+                SizedBox(height:20),
+                SizedBox(
+                  height:75,
+                  width:150,
+                  child: ElevatedButton(
+                    style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.green)),
+                    onPressed: ()async{
+                      Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  ScanPage()));
+
+
+                    },
+                    child: Text('Scan'),
+                  ),
+                ),
 
               ],
             ),

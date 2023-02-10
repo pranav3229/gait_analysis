@@ -1,6 +1,7 @@
 //import 'dart:html';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:gait_analysis/homescreen.dart';
 
 import 'preview.dart';
 
@@ -55,27 +56,59 @@ class ScanPageState extends State<ScanPage> {
   @override
   Widget build(BuildContext context) {
     if (_isLoading) {
-      return Container(
-        color: Colors.white,
-        child: const Center(
-          child: CircularProgressIndicator(),
+      return Scaffold(
+        appBar: AppBar(
+          leading: BackButton(
+              onPressed: (){
+                Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            homescreen()));
+              },
+              color: Colors.black
+          ),
+          centerTitle: true,
+          backgroundColor: Colors.green,
+          title: Text('Record Video'),
+        ),
+        body: Container(
+          color: Colors.white,
+          child: const Center(
+            child: CircularProgressIndicator(),
+          ),
         ),
       );
     } else {
-      return Center(
-        child: Stack(
-          alignment: Alignment.bottomCenter,
-          children: [
-            CameraPreview(_cameraController),
-            Padding(
-              padding: const EdgeInsets.all(25),
-              child: FloatingActionButton(
-                backgroundColor: Colors.red,
-                child: Icon(_isRecording ? Icons.stop : Icons.circle),
-                onPressed: () => _recordVideo(),
+      return Scaffold(
+        appBar: AppBar(
+          leading: BackButton(
+              onPressed: (){
+                Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            homescreen()));
+              },
+              color: Colors.black
+          ),
+          centerTitle: true,
+          backgroundColor: Colors.green,
+          title: Text('Record Video'),
+        ),
+        body: Center(
+          child: Stack(
+            alignment: Alignment.bottomCenter,
+            children: [
+              CameraPreview(_cameraController),
+              Padding(
+                padding: const EdgeInsets.all(25),
+                child: FloatingActionButton(
+                  backgroundColor: Colors.red,
+                  child: Icon(_isRecording ? Icons.stop : Icons.circle),
+                  onPressed: () => _recordVideo(),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       );
     }
