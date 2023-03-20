@@ -13,6 +13,7 @@ class homescreen extends StatefulWidget {
 }
 
 class _homescreenState extends State<homescreen> {
+
   signOut() async {
     FirebaseAuth auth = FirebaseAuth.instance;
     auth.signOut();
