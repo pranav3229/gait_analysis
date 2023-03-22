@@ -5,6 +5,31 @@ import 'package:gait_analysis/homescreen.dart';
 import 'package:video_player/video_player.dart';
 
 import 'main.dart';
+import 'dart:convert'; 
+import 'package:http/http.dart' as http; 
+
+Future<void> sendVideo(String url, File videoFile) async { 
+  // create multipart request 
+  var request = http.MultipartRequest('POST', Uri.parse(url)); 
+  print('Sending request to ${Uri.parse(url)}');
+  // add video file to request 
+  var videoStream = http.ByteStream(videoFile.openRead()); 
+  var videoLength = await videoFile.length(); 
+  var videoMultipart = http.MultipartFile('video', videoStream, videoLength, filename: videoFile.path.split('/').last); 
+  print("Addidng multipart request");
+  request.files.add(videoMultipart); 
+  // send request 
+  print("\nREQUEST SENT!!!\n");
+  var response = await request.send(); 
+  // check response status code 
+  if (response.statusCode == 200) { 
+    print('Video sent successfully!'); 
+  }
+  else { 
+    print('\n|||||||||||||||Error sending video: ${response.statusCode}|||||||\n'); 
+  } 
+  print("FIN!!!");
+}
 
 class PreviewPage extends StatefulWidget {
   final String filePath;
@@ -46,7 +71,8 @@ class PreviewPageState extends State<PreviewPage> {
                   MaterialPageRoute(
                       builder: (context) =>
                           homescreen()));
-              print('do something with the file');
+              // print('do something with the file');
+              sendVideo("https://172.20.17.92:5000/success", File(widget.filePath));
             },
           )
         ],
