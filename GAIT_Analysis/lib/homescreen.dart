@@ -39,7 +39,7 @@ class _homescreenState extends State<homescreen> {
       body: Center(
         child:
           Padding(
-            padding: const EdgeInsets.all(50),
+            padding: const EdgeInsets.all(35),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
