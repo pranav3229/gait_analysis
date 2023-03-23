@@ -6,9 +6,17 @@ import 'package:video_player/video_player.dart';
 
 import 'main.dart';
 import 'dart:convert'; 
-import 'package:http/http.dart' as http; 
+import 'package:http/http.dart' as http;
+class MyHttpOverrides extends HttpOverrides{
+  @override
+  HttpClient createHttpClient(SecurityContext? context){
+    return super.createHttpClient(context)
+      ..badCertificateCallback = (X509Certificate cert, String host, int port)=> true;
+  }
+}
 
-Future<void> sendVideo(String url, File videoFile) async { 
+Future<void> sendVideo(String url, File videoFile) async {
+  HttpOverrides.global = MyHttpOverrides();
   final client = http.Client();
   final timeout = Duration(seconds: 120000); // Increase the timeout to 30 seconds
 
@@ -18,24 +26,28 @@ Future<void> sendVideo(String url, File videoFile) async {
     print('Sending request to ${Uri.parse(url)}');
     // add video file to request 
     var videoStream = http.ByteStream(videoFile.openRead()); 
-    var videoLength = await videoFile.length(); 
+    var videoLength = await videoFile.length();
     var videoMultipart = http.MultipartFile('video', videoStream, videoLength, filename: videoFile.path.split('/').last); 
     print("Adding multipart request");
     request.files.add(videoMultipart); 
     // send request 
     print("\nREQUEST SENT!!!\n");
-    final response = await client.send(request).timeout(timeout); // Use the client with the timeout
-
+    final response = await client.send(request);
+   // Use the client with the timeout
+    print (response.statusCode);
     // check response status code 
     if (response.statusCode == 200) { 
-      print('Video sent successfully!'); 
+      print('Video sent successfully!');
+      print (response.statusCode);
     }
     else { 
-      print('\n|||||||||||||||Error sending video: ${response.statusCode}|||||||\n'); 
+      print('\n|||||||||||||||Error sending video: ${response.statusCode}|||||||\n');
+      print (response.statusCode);
     } 
     print("FIN!!!");
   } catch (e) {
     print('Error sending video: $e');
+
   } finally {
     client.close();
   }
@@ -78,12 +90,13 @@ class PreviewPageState extends State<PreviewPage> {
           IconButton(
             icon: const Icon(Icons.check),
             onPressed: () {
+
+              // print('do something with the file');
+              sendVideo("https://172.20.17.92:5000/success", File(widget.filePath));
               Navigator.of(context).pushReplacement(
                   MaterialPageRoute(
                       builder: (context) =>
                           homescreen()));
-              // print('do something with the file');
-              sendVideo("https://172.20.17.92:5000/success", File(widget.filePath));
             },
           )
         ],
