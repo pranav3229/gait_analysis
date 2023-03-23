@@ -9,27 +9,38 @@ import 'dart:convert';
 import 'package:http/http.dart' as http; 
 
 Future<void> sendVideo(String url, File videoFile) async { 
-  // create multipart request 
-  var request = http.MultipartRequest('POST', Uri.parse(url)); 
-  print('Sending request to ${Uri.parse(url)}');
-  // add video file to request 
-  var videoStream = http.ByteStream(videoFile.openRead()); 
-  var videoLength = await videoFile.length(); 
-  var videoMultipart = http.MultipartFile('video', videoStream, videoLength, filename: videoFile.path.split('/').last); 
-  print("Addidng multipart request");
-  request.files.add(videoMultipart); 
-  // send request 
-  print("\nREQUEST SENT!!!\n");
-  var response = await request.send(); 
-  // check response status code 
-  if (response.statusCode == 200) { 
-    print('Video sent successfully!'); 
+  final client = http.Client();
+  final timeout = Duration(seconds: 120000); // Increase the timeout to 30 seconds
+
+  try {
+    // create multipart request 
+    var request = http.MultipartRequest('POST', Uri.parse(url)); 
+    print('Sending request to ${Uri.parse(url)}');
+    // add video file to request 
+    var videoStream = http.ByteStream(videoFile.openRead()); 
+    var videoLength = await videoFile.length(); 
+    var videoMultipart = http.MultipartFile('video', videoStream, videoLength, filename: videoFile.path.split('/').last); 
+    print("Adding multipart request");
+    request.files.add(videoMultipart); 
+    // send request 
+    print("\nREQUEST SENT!!!\n");
+    final response = await client.send(request).timeout(timeout); // Use the client with the timeout
+
+    // check response status code 
+    if (response.statusCode == 200) { 
+      print('Video sent successfully!'); 
+    }
+    else { 
+      print('\n|||||||||||||||Error sending video: ${response.statusCode}|||||||\n'); 
+    } 
+    print("FIN!!!");
+  } catch (e) {
+    print('Error sending video: $e');
+  } finally {
+    client.close();
   }
-  else { 
-    print('\n|||||||||||||||Error sending video: ${response.statusCode}|||||||\n'); 
-  } 
-  print("FIN!!!");
 }
+
 
 class PreviewPage extends StatefulWidget {
   final String filePath;

@@ -39,14 +39,17 @@ class _homescreenState extends State<homescreen> {
       body: Center(
         child:
           Padding(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(50),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                Row(children: [
+                   SizedBox(
+                   height:200,
+                 ),
                 SizedBox(
                   height:150,
-                ),
-                SizedBox(
-                  height:75,
                   width:150,
                   child: ElevatedButton(
                     style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.green)),
@@ -59,9 +62,12 @@ class _homescreenState extends State<homescreen> {
                       child: Text('New Patient'),
                   ),
                 ),
-                SizedBox(height:20),
                 SizedBox(
-                  height:75,
+                  height:200,
+                  width : 10
+                ),
+                SizedBox(
+                  height:150,
                   width:150,
                   child: ElevatedButton(
                       style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.green)),
@@ -75,9 +81,14 @@ class _homescreenState extends State<homescreen> {
                     child: Text('View Patients'),
                   ),
                 ),
-                SizedBox(height:20),
+
+                ]),
+                Row(children: [
+                  SizedBox(
+                    height:200,
+                  ),
                 SizedBox(
-                  height:75,
+                  height:150,
                   width:150,
                   child: ElevatedButton(
                     style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.green)),
@@ -88,9 +99,11 @@ class _homescreenState extends State<homescreen> {
                     child: Text('Settings'),
                   ),
                 ),
-                SizedBox(height:20),
                 SizedBox(
-                  height:75,
+                  height:200,
+                  width: 10),
+                SizedBox(
+                  height:150,
                   width:150,
                   child: ElevatedButton(
                     style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.green)),
@@ -111,31 +124,12 @@ class _homescreenState extends State<homescreen> {
                         print('User is signed in!');
                       }
                     });
-
-
-
                   },
                     child: Text('Logout'),
                   ),
                 ),
-                SizedBox(height:20),
-                SizedBox(
-                  height:75,
-                  width:150,
-                  child: ElevatedButton(
-                    style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.green)),
-                    onPressed: ()async{
-                      Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  ScanPage()));
 
-
-                    },
-                    child: Text('Scan'),
-                  ),
-                ),
-
+                ],)
               ],
             ),
           )
