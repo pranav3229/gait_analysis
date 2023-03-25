@@ -14,6 +14,7 @@ import 'package:path/path.dart' as Path;
 import 'homescreen.dart';
 
 class NewPatientForm extends StatefulWidget {
+
   const NewPatientForm({super.key});
 
   @override
@@ -92,39 +93,6 @@ class NewPatientFormState extends State<NewPatientForm> {
         print('Image Path $_image');
       });
     }
-
-    // uploadImage(File imagefile) async {
-    //   final _firebaseStorage = FirebaseStorage.instance;
-    //   final _imagePicker = ImagePicker();
-    //   PickedFile? image;
-    //   //Check Permissions
-    //   // await Permission.photos.request();
-    //   //
-    //   // var permissionStatus = await Permission.photos.status;
-    //
-    //   {
-    //     //Select Image
-    //     image = await _imagePicker.getImage(source: ImageSource.gallery);
-    //     var file = File(image!.path);
-    //
-    //     if (image != null){
-    //       //Upload to Firebase
-    //       var snapshot = await _firebaseStorage.ref();
-    //       snapshot.child('images/imageName').putFile(file).whenComplete;
-    //           // .child('images/imageName')
-    //           // .putFile(file).whenComplete;
-    //
-    //       var downloadUrl = await snapshot.getDownloadURL();
-    //       setState(() {
-    //         var imageUrl = downloadUrl;
-    //       });
-    //     } else {
-    //       print('No Image Path Received');
-    //     }
-    //   } {
-    //     print('Permission not granted. Try Again with permission access');
-    //   }
-    // }
     Future<void> addUser() {
       // patient.profImageUrl=uploadPic(imagefile) as String;
       // Call the user's CollectionReference to add a new user
@@ -165,18 +133,6 @@ class NewPatientFormState extends State<NewPatientForm> {
         print(onError);
       });
     }
-
-    // Future uploadPic(BuildContext context) async{
-    //   String fileName = basename(_image!.path);
-    //   // StorageReference firebaseStorageRef = FirebaseStorage.instance.ref().child(fileName);
-    //   // StorageUploadTask uploadTask = firebaseStorageRef.putFile(_image);
-    //   // StorageTaskSnapshot taskSnapshot=await uploadTask.onComplete;
-    //   setState(() {
-    //     print("Profile Picture uploaded");
-    //     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Profile Picture Uploaded')));
-    //   });
-    // }
-
     return Scaffold(
         // resizeToAvoidBottomInset: true,
         appBar: AppBar(
@@ -247,27 +203,13 @@ class NewPatientFormState extends State<NewPatientForm> {
                         decoration: const InputDecoration(
                           labelText: 'Patient Name*',
                         ),
-                        // onSaved: (String? value){
-                        //   patient.patientName = value!;
-                        // },
+
                         controller: pN,
                         validator: (String? value) {
                           return (value!.isEmpty)
                               ? 'This field is mandatory'
                               : null;
                         }),
-                    // TextFormField(
-                    //   decoration: const InputDecoration(
-                    //     labelText: 'Patient ID*',
-                    //   ),
-                    //   // onSaved: (String? value){
-                    //   //   patient.patientID = value!;
-                    //   // },
-                    //     controller: pID,
-                    //   validator: (String? value){
-                    //     return (value!.isEmpty) ?'This field is mandatory':null;
-                    //   }
-                    // ),
                     TextFormField(
                       decoration: const InputDecoration(
                         labelText: 'Enter Patient Phone Number',

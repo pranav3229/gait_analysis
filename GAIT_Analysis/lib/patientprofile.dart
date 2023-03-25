@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gait_analysis/editPatient.dart';
 import 'package:gait_analysis/scan.dart';
 
 import 'homescreen.dart';
@@ -280,6 +281,20 @@ class _patientprofileState extends State<patientprofile> {
                   },
                   child: Text('Scan'),
                 ),
+                SizedBox(width:10),
+                ElevatedButton(
+                  style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.green)),
+                  onPressed: ()async{
+                    Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                editPatient(text_name, text_id, text_dob, text_gender, text_height, text_phone, text_profurl, text_weight)));
+
+
+                  },
+                  child: Text('Edit Patient'),
+                ),
+
               ],
 
             ),
@@ -290,60 +305,3 @@ class _patientprofileState extends State<patientprofile> {
     );
   }
 }
-class DescriptionTextWidget extends StatefulWidget {
-  final String text;
-
-  DescriptionTextWidget({required this.text});
-
-  @override
-  _DescriptionTextWidgetState createState() => new _DescriptionTextWidgetState();
-}
-
-class _DescriptionTextWidgetState extends State<DescriptionTextWidget> {
-  late String firstHalf;
-  late String secondHalf;
-
-  bool flag = true;
-
-  @override
-  void initState() {
-    super.initState();
-
-    if (widget.text.length > 50) {
-      firstHalf = widget.text.substring(0, 50);
-      secondHalf = widget.text.substring(50, widget.text.length);
-    } else {
-      firstHalf = widget.text;
-      secondHalf = "";
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return new Container(
-      padding: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
-      child: secondHalf.isEmpty
-          ? new Text(firstHalf)
-          : new Column(
-        children: <Widget>[
-          new Text(flag ? (firstHalf + "...") : (firstHalf + secondHalf)),
-          new InkWell(
-            child: new Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                new Text(
-                  flag ? "show more" : "show less",
-                  style: new TextStyle(color: Colors.blue),
-                ),
-              ],
-            ),
-            onTap: () {
-              setState(() {
-                flag = !flag;
-              });
-            },
-          ),
-        ],
-      ),
-    );
-  }}
