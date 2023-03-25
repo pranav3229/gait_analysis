@@ -184,51 +184,51 @@ class _editPatientState extends State<editPatient> {
             child: SingleChildScrollView(
               child: Column(
                 children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      // Align(
-                      //   alignment: Alignment.center,
-                      //   child: CircleAvatar(
-                      //     radius: 80,
-                      //     backgroundColor: Colors.black,
-                      //     child: ClipOval(
-                      //       // ignore: unnecessary_new
-                      //       child: new SizedBox(
-                      //         width: 180.0,
-                      //         height: 240.0,
-                      //         child: (_image != null)
-                      //             ? Image.file(
-                      //           imagefile,
-                      //           fit: BoxFit.fill,
-                      //         )
-                      //             : Image.network(
-                      //           "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
-                      //         ),
-                      //       ),
-                      //     ),
-                      //   ),
-                      // ),
-                      Container(
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Padding(
-                            padding: EdgeInsets.only(top: 150.0),
-                            child: IconButton(
-                              icon: Icon(
-                                FontAwesomeIcons.camera,
-                                size: 25.0,
-                                color: Colors.black38,
-                              ),
-                              onPressed: () {
-                                // getImage();
-                              },
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.center,
+                  //   children: <Widget>[
+                  //     // Align(
+                  //     //   alignment: Alignment.center,
+                  //     //   child: CircleAvatar(
+                  //     //     radius: 80,
+                  //     //     backgroundColor: Colors.black,
+                  //     //     child: ClipOval(
+                  //     //       // ignore: unnecessary_new
+                  //     //       child: new SizedBox(
+                  //     //         width: 180.0,
+                  //     //         height: 240.0,
+                  //     //         child: (_image != null)
+                  //     //             ? Image.file(
+                  //     //           imagefile,
+                  //     //           fit: BoxFit.fill,
+                  //     //         )
+                  //     //             : Image.network(
+                  //     //           "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
+                  //     //         ),
+                  //     //       ),
+                  //     //     ),
+                  //     //   ),
+                  //     // ),
+                  //     Container(
+                  //       child: Align(
+                  //         alignment: Alignment.centerLeft,
+                  //         child: Padding(
+                  //           padding: EdgeInsets.only(top: 150.0),
+                  //           child: IconButton(
+                  //             icon: Icon(
+                  //               FontAwesomeIcons.camera,
+                  //               size: 25.0,
+                  //               color: Colors.black38,
+                  //             ),
+                  //             onPressed: () {
+                  //               // getImage();
+                  //             },
+                  //           ),
+                  //         ),
+                  //       ),
+                  //     ),
+                  //   ],
+                  // ),
                   TextFormField(
                       decoration: const InputDecoration(
                         labelText: 'Patient Name',
