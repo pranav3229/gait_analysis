@@ -36,6 +36,7 @@ class _patientviewState extends State<patientview> {
   bool _searchBoolean = false;
   Widget _searchTextField() {
     return TextField(
+      onChanged: (query) => setState(() => _searchQuery = query),
       autofocus: true, //Display the keyboard when TextField is displayed
       cursorColor: Colors.white,
       style: TextStyle(
@@ -58,112 +59,265 @@ class _patientviewState extends State<patientview> {
       ),
     );
   }
-  Widget _defaultListView(){
+  // Widget _defaultListView(){
+  //   return StreamBuilder(
+  //     stream: FirebaseFirestore.instance.collection('patients').orderBy('name').snapshots(),
+  //     builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+  //       if (!snapshot.hasData) {
+  //         return Center(
+  //           child: CircularProgressIndicator(),
+  //         );
+  //       }
+  //       // final List<DocumentSnapshot<Object?>>? documents = snapshot.data?.docs.cast<DocumentSnapshot<Object?>>();
+  //       // final filteredDocuments = documents?.where((document) {
+  //       //   final name = document.get('name').toString();
+  //       //   return name.contains(_searchQuery.toLowerCase());
+  //       // }).toList();
+  //       final List<DocumentSnapshot> documents = snapshot.data!.docs;
+  //       List<DocumentSnapshot> filteredDocuments = [];
+  //
+  //       if (_searchController.text.isNotEmpty) {
+  //         for (var document in documents) {
+  //           if (document['name']
+  //               .toString()
+  //               .toLowerCase()
+  //               .contains(_searchController.text.toLowerCase())) {
+  //             filteredDocuments.add(document);
+  //           }
+  //         }
+  //       } else {
+  //         filteredDocuments = documents;
+  //       }
+  //
+  //
+  //       return ListView(
+  //         shrinkWrap: true,
+  //         children: snapshot.data!.docs.map((document) {
+  //           return Container(
+  //               height: 125,
+  //               child: Ink(
+  //
+  //                 child: InkWell(
+  //                   splashColor: Colors.tealAccent,
+  //                   onTap: () {
+  //                     print(document.id);
+  //                     print(document['name']);
+  //                     print(document['dob']);
+  //                     print(document['gender']);
+  //                     print(document['height']);
+  //                     print(document['phone']);
+  //                     print(document['profile picture URL']);
+  //                     print(document['weight']);
+  //                     text_id = document.id;
+  //                     text_name = document['name'];
+  //                     text_dob = document['dob'];
+  //                     text_gender = document['gender'];
+  //                     text_height = document['height'];
+  //                     text_phone = document['phone'];
+  //                     text_profurl = document['profile picture URL'];
+  //                     text_weight = document['weight'];
+  //                     Navigator.of(context).pushReplacement(MaterialPageRoute(
+  //                         builder: (context) => patientprofile(
+  //                             text_name,
+  //                             text_id,
+  //                             text_dob,
+  //                             text_gender,
+  //                             text_height,
+  //                             text_phone,
+  //                             text_profurl,
+  //                             text_weight)));
+  //                   },
+  //                   child: new Card(
+  //
+  //                       child: Center(
+  //                           child: Column(
+  //                             children: [
+  //                               SizedBox(height: 25),
+  //                               Text(document['name']),
+  //                               SizedBox(height: 35),
+  //                               Text('ID: ${document.id}'),
+  //                             ],
+  //                           ))),
+  //                 ),
+  //               ));
+  //         }).toList(),
+  //       );
+  //     },
+  //   );
+  // }
+  Widget _searchListView(){
     return StreamBuilder(
-      stream: FirebaseFirestore.instance.collection('patients').snapshots(),
+      stream: FirebaseFirestore.instance.collection('patients').orderBy('name').snapshots(),
       builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (!snapshot.hasData) {
           return Center(
             child: CircularProgressIndicator(),
           );
         }
+        final List<DocumentSnapshot> documents = snapshot.data!.docs;
+        List<DocumentSnapshot> filteredDocuments = [];
 
-        return ListView(
-          shrinkWrap: true,
-          children: snapshot.data!.docs.map((document) {
-            return Container(
-                height: 125,
-                child: Ink(
+        if (_searchController.text.isNotEmpty) {
+          for (var document in documents) {
+            if (document['name'].toString().toLowerCase().contains(_searchController.text.toLowerCase()) ||
+                document.id.toLowerCase().contains(_searchController.text.toLowerCase()) ||
+                document['phone'].toString().toLowerCase().contains(_searchController.text.toLowerCase())) {
+              filteredDocuments.add(document);
+            }
+          }
+        } else {
+          filteredDocuments = documents;
+        }
 
-                  child: InkWell(
-                    splashColor: Colors.tealAccent,
-                    onTap: () {
-                      print(document.id);
-                      print(document['name']);
-                      print(document['dob']);
-                      print(document['gender']);
-                      print(document['height']);
-                      print(document['phone']);
-                      print(document['profile picture URL']);
-                      print(document['weight']);
-                      text_id = document.id;
-                      text_name = document['name'];
-                      text_dob = document['dob'];
-                      text_gender = document['gender'];
-                      text_height = document['height'];
-                      text_phone = document['phone'];
-                      text_profurl = document['profile picture URL'];
-                      text_weight = document['weight'];
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (context) => patientprofile(
-                              text_name,
-                              text_id,
-                              text_dob,
-                              text_gender,
-                              text_height,
-                              text_phone,
-                              text_profurl,
-                              text_weight)));
-                    },
-                    child: new Card(
+        return Column(
+          children: [
+            AppBar(
+              leading: BackButton(
+                  onPressed: () {
+                    Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(builder: (context) => homescreen()));
+                  },
+                  color: Colors.white),
+              backgroundColor: Colors.green,
+              actions: !_searchBoolean
+                  ? [
+                IconButton(
+                  // color: Colors.black,
+                    icon: Icon(Icons.search),
+                    onPressed: () {
+                      setState(() {
+                        _searchBoolean = true;
+                      });
+                    })
+              ]
+                  : [
+                IconButton(
 
-                        child: Center(
+                    icon: Icon(Icons.clear),
+                    onPressed: () {
+                      setState(() {
+                        _searchBoolean = false;
+                      });
+                    }
+                )
+              ],
+              centerTitle: true
+              ,
+              title: !_searchBoolean ?Text('View Patients') :TextField(
+                controller: _searchController,
+                decoration: InputDecoration(
+                  hintText: 'Search',
+                  hintStyle: TextStyle(color: Colors.white),
+                ),
+                style: TextStyle(color: Colors.white),
+                onChanged: (value) {
+                  setState(() {});
+                },
+              ),
+            ),
+            Expanded(
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: filteredDocuments.length,
+                itemBuilder: (context, index) {
+                  var document = filteredDocuments[index];
+                  return Container(
+                    height: 125,
+                    child: Ink(
+                      child: InkWell(
+                        splashColor: Colors.tealAccent,
+                        onTap: () {
+                          print(document.id);
+                          print(document['name']);
+                          print(document['dob']);
+                          print(document['gender']);
+                          print(document['height']);
+                          print(document['phone']);
+                          print(document['profile picture URL']);
+                          print(document['weight']);
+                          text_id = document.id;
+                          text_name = document['name'];
+                          text_dob = document['dob'];
+                          text_gender = document['gender'];
+                          text_height = document['height'];
+                          text_phone = document['phone'];
+                          text_profurl = document['profile picture URL'];
+                          text_weight = document['weight'];
+                          Navigator.of(context).pushReplacement(MaterialPageRoute(
+                              builder: (context) => patientprofile(
+                                  text_name,
+                                  text_id,
+                                  text_dob,
+                                  text_gender,
+                                  text_height,
+                                  text_phone,
+                                  text_profurl,
+                                  text_weight)));
+                        },
+                        child: Card(
+                          child: Center(
                             child: Column(
                               children: [
-                                SizedBox(height: 25),
+                                SizedBox(height: 15),
                                 Text(document['name']),
-                                SizedBox(height: 35),
+                                SizedBox(height: 25),
+                                Text('Phone number: ${document['phone']}'),
+                                SizedBox(height: 25),
                                 Text('ID: ${document.id}'),
+
                               ],
-                            ))),
-                  ),
-                ));
-          }).toList(),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
         );
       },
     );
   }
+  final TextEditingController _searchController = TextEditingController();
+  String _searchQuery = '';
 
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        actions: !_searchBoolean
-            ? [
-          IconButton(
-            // color: Colors.black,
-              icon: Icon(Icons.search),
-              onPressed: () {
-                setState(() {
-                  _searchBoolean = true;
-                });
-              })
-        ]
-            : [
-          IconButton(
-
-              icon: Icon(Icons.clear),
-              onPressed: () {
-                setState(() {
-                  _searchBoolean = false;
-                });
-              }
-          )
-        ],
-        leading: BackButton(
-            onPressed: () {
-              Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (context) => homescreen()));
-            },
-            color: Colors.white),
-
-        centerTitle: true,
-        backgroundColor: Colors.green,
-        title: !_searchBoolean ? Text('View Patients') : _searchTextField(),
-      ),
+      // appBar: AppBar(
+      //   actions: !_searchBoolean
+      //       ? [
+      //     IconButton(
+      //       // color: Colors.black,
+      //         icon: Icon(Icons.search),
+      //         onPressed: () {
+      //           setState(() {
+      //             _searchBoolean = true;
+      //           });
+      //         })
+      //   ]
+      //       : [
+      //     IconButton(
+      //
+      //         icon: Icon(Icons.clear),
+      //         onPressed: () {
+      //           setState(() {
+      //             _searchBoolean = false;
+      //           });
+      //         }
+      //     )
+      //   ],
+      //
+      //
+      //   centerTitle: true,
+      //   backgroundColor: Colors.green,
+      //   title: !_searchBoolean ? Text('View Patients') : _searchTextField(),
+      // ),
       body: Container(
-        child: _defaultListView(),
+        child: _searchListView(),
         // child: StreamBuilder(
         //   stream: FirebaseFirestore.instance.collection('patients').snapshots(),
         //   builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
