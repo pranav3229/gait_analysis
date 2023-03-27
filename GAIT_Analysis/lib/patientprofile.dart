@@ -1,7 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gait_analysis/editPatient.dart';
 import 'package:gait_analysis/scan.dart';
-
+import 'package:gait_analysis/viewpatients.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 import 'homescreen.dart';
 class patientprofile extends StatefulWidget {
   // const patientprofile({Key? key}) : super(key: key);
@@ -293,6 +296,59 @@ class _patientprofileState extends State<patientprofile> {
 
                   },
                   child: Text('Edit Patient'),
+                ),
+                SizedBox(width:10),
+                ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
+                  ),
+                  onPressed: () async {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text('Confirm Delete'),
+                          content: Text('Are you sure you want to delete this patient?'),
+                          actions: [
+                            TextButton(
+                              child: Text('Cancel'),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                            TextButton(
+                              child: Text('Delete'),
+                              onPressed: () async {
+                                try {
+                                  // Get a reference to the document you want to delete
+                                  DocumentReference docRef =
+                                  FirebaseFirestore.instance.collection('patients').doc('${text_id}');
+                                  print(text_profurl);
+                                  final FirebaseStorage storage = FirebaseStorage.instance;
+                                  final ref = storage.refFromURL(text_profurl);
+                                  await ref.delete();
+                                  debugPrint('Image deleted successfully.');
+
+                                  // Delete the document
+                                  await docRef.delete();
+                                  print('Document deleted successfully');
+                                } catch (e) {
+                                  debugPrint('Error deleting image: $e');
+                                  print('Error deleting document: $e');
+                                }
+                                Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                    builder: (context) => patientview(),
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  },
+                  child: Text('Delete Patient'),
                 ),
 
               ],
