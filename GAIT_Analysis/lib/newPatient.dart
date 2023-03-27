@@ -13,6 +13,14 @@ import 'package:path/path.dart' as Path;
 
 import 'homescreen.dart';
 
+Future<bool> _checkPhoneNumberExists(String phoneNumber) async {
+  final snapshot = await FirebaseFirestore.instance
+      .collection('patients')
+      .where('phone', isEqualTo: phoneNumber)
+      .get();
+  return snapshot.docs.isNotEmpty;
+}
+
 class NewPatientForm extends StatefulWidget {
 
   const NewPatientForm({super.key});
@@ -110,6 +118,7 @@ class NewPatientFormState extends State<NewPatientForm> {
             'weight': pW.text, // 42
           })
           .then((value) => {
+
                 print('User Added'),
                 Navigator.of(context).pushReplacement(
                     MaterialPageRoute(builder: (context) => homescreen()))
@@ -118,10 +127,11 @@ class NewPatientFormState extends State<NewPatientForm> {
     }
 
     uploadPic(File _image1) async {
+
       FirebaseStorage storage = FirebaseStorage.instance;
       // String url='';
       final ref = storage.ref();
-      final spaceref = ref.child("images/${pN.text}.jpg");
+      final spaceref = ref.child("images/${pN.text+pD.text+pH.text+pPN.text+pW.text}.jpg");
       UploadTask uploadTask = spaceref.putFile(_image1);
       uploadTask.whenComplete(() async {
         print('uploaded successfully');
@@ -133,6 +143,25 @@ class NewPatientFormState extends State<NewPatientForm> {
         print(onError);
       });
     }
+    bool _phoneNumberExists = false;
+    void _onSubmit() async {
+      if (_formKey.currentState!.validate()) {
+        final phoneNumber = pPN.text;
+        _phoneNumberExists = await _checkPhoneNumberExists(phoneNumber);
+        if (_phoneNumberExists||pPN.text.length!=10) {
+          setState(() {}); // re-build widget to show validation error message
+        } else {
+          // submit form
+        }
+      }
+    }
+    String? _validatePhoneNumber(String? value) {
+      if (_phoneNumberExists) {
+        return 'Phone number already exists';
+      }
+      return null;
+    }
+
     return Scaffold(
         // resizeToAvoidBottomInset: true,
         appBar: AppBar(
@@ -219,9 +248,9 @@ class NewPatientFormState extends State<NewPatientForm> {
                         FilteringTextInputFormatter.digitsOnly
                       ],
                       validator: (String? value) {
-                        return (value!.length != 10)
-                            ? 'Enter Valid Phone Number'
-                            : null;
+                        if (value!.length != 10)
+                            {return 'Enter Valid Phone Number';}
+                            else _validatePhoneNumber;
                       },
                       controller: pPN,
                       // onSaved: (String? value){
@@ -339,14 +368,22 @@ class NewPatientFormState extends State<NewPatientForm> {
                               MaterialStateProperty.all<Color>(Colors.green),
                         ),
                         onPressed: () async {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return Center(child: CircularProgressIndicator());
+                            },
+                          );
                           uploadPic(imagefile);
 
                           // print(uploadPic(imagefile));
+
 
                           if (_formKey.currentState!.validate()) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(content: Text('Processing Data')),
                             );
+                          }
 
                             // sleep(Duration(seconds: 5));
                             patient.patientName = pN.text;
@@ -375,7 +412,9 @@ class NewPatientFormState extends State<NewPatientForm> {
                                 patient.patientHeight.toString());
                             print("Patient Weight:" +
                                 patient.patientWeight.toString());
-                          }
+                          Navigator.of(context).pop();
+
+
                         },
                         child: const Text('Add Patient'),
                       ),
