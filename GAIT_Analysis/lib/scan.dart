@@ -31,8 +31,8 @@ class ScanPageState extends State<ScanPage> {
 
   _initCamera() async {
     final cameras = await availableCameras();
-    final back = cameras.firstWhere((camera) => camera.lensDirection == CameraLensDirection.back);
-    _cameraController = CameraController(back, ResolutionPreset.medium);
+    final back = cameras.firstWhere((camera) => camera.lensDirection == CameraLensDirection.front);
+    _cameraController = CameraController(back, ResolutionPreset.max);
     await _cameraController.initialize();
     setState(() => _isLoading = false);
   }

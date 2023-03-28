@@ -3,7 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:gait_analysis/homescreen.dart';
 import 'package:video_player/video_player.dart';
-
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 import 'main.dart';
 import 'dart:convert'; 
 import 'package:http/http.dart' as http;
@@ -17,24 +18,21 @@ class MyHttpOverrides extends HttpOverrides{
 
 Future<void> sendVideo(String url, File videoFile) async {
   HttpOverrides.global = MyHttpOverrides();
-  final client = http.Client();
-  final timeout = Duration(seconds: 120000); // Increase the timeout to 30 seconds
+  // final client = http.Client();
+  // final timeout = Duration(seconds: 120000); // Increase the timeout to 30 seconds
 
   try {
-    // create multipart request 
-    var request = http.MultipartRequest('POST', Uri.parse(url)); 
-    print('Sending request to ${Uri.parse(url)}');
-    // add video file to request 
-    var videoStream = http.ByteStream(videoFile.openRead()); 
-    var videoLength = await videoFile.length();
-    var videoMultipart = http.MultipartFile('video', videoStream, videoLength, filename: videoFile.path.split('/').last); 
-    print("Adding multipart request");
-    request.files.add(videoMultipart); 
-    // send request 
-    print("\nREQUEST SENT!!!\n");
-    final response = await client.send(request);
-   // Use the client with the timeout
-    print (response.statusCode);
+  print("Sending request!!!\n");
+  http.Response response = await http.post(
+  Uri.parse(url),
+  headers: {
+    'Accept': "*/*",
+    'Content-Length': videoFile.lengthSync().toString(),
+    'Connection': 'keep-alive',
+  },
+  body: videoFile.readAsBytesSync(),
+  );
+  print (response.statusCode);
     // check response status code 
     if (response.statusCode == 200) { 
       print('Video sent successfully!');
@@ -48,8 +46,6 @@ Future<void> sendVideo(String url, File videoFile) async {
   } catch (e) {
     print('Error sending video: $e');
 
-  } finally {
-    client.close();
   }
 }
 
@@ -89,10 +85,11 @@ class PreviewPageState extends State<PreviewPage> {
         actions: [
           IconButton(
             icon: const Icon(Icons.check),
-            onPressed: () {
-
+            onPressed: () async {
+              // XFile? video = await ImagePicker().pickVideo(source: ImageSource.gallery);
               // print('do something with the file');
               sendVideo("https://172.20.17.92:5000/success", File(widget.filePath));
+              // sendVideo("https://172.20.17.92:5000/success", File(video!.path));
               Navigator.of(context).pushReplacement(
                   MaterialPageRoute(
                       builder: (context) =>
