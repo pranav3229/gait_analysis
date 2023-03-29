@@ -286,7 +286,7 @@ class _patientprofileState extends State<patientprofile> {
                                                                 text_phone,
                                                                 text_profurl,
                                                                 text_weight)));
-                                          },
+                                          },//hello
                                           child: new Card(
                                               child: Center(
                                                   child: Column(
