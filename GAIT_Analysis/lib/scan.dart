@@ -6,13 +6,42 @@ import 'package:gait_analysis/homescreen.dart';
 import 'preview.dart';
 
 class ScanPage extends StatefulWidget {
-  const ScanPage({Key? key}) : super(key: key);
+  late String text_name;
+  late String text_id;
+  late String text_dob;
+  late String text_gender;
+  late String text_height;
+  late String text_phone;
+  late String text_profurl;
+  late String text_weight;
+  // const ScanPage({Key? key}) : super(key: key);
+  ScanPage(this.text_name, this.text_id, this.text_dob, this.text_gender,
+      this.text_height, this.text_phone, this.text_profurl, this.text_weight);
 
   @override
-  ScanPageState createState() => ScanPageState();
+  ScanPageState createState() => ScanPageState(
+      this.text_name,
+      this.text_id,
+      this.text_dob,
+      this.text_gender,
+      this.text_height,
+      this.text_phone,
+      this.text_profurl,
+      this.text_weight);
 }
 
 class ScanPageState extends State<ScanPage> {
+  late String text_name;
+  late String text_id;
+  late String text_dob;
+  late String text_gender;
+  late String text_height;
+  late String text_phone;
+  late String text_profurl;
+  late String text_weight;
+  ScanPageState(this.text_name, this.text_id, this.text_dob, this.text_gender,
+      this.text_height, this.text_phone, this.text_profurl, this.text_weight);
+  // ScanPageState(this.text_id);
   bool _isLoading = true;
   bool _isRecording = false;
   late CameraController _cameraController;
@@ -31,7 +60,8 @@ class ScanPageState extends State<ScanPage> {
 
   _initCamera() async {
     final cameras = await availableCameras();
-    final back = cameras.firstWhere((camera) => camera.lensDirection == CameraLensDirection.front);
+    final back = cameras.firstWhere(
+        (camera) => camera.lensDirection == CameraLensDirection.front);
     _cameraController = CameraController(back, ResolutionPreset.max);
     await _cameraController.initialize();
     setState(() => _isLoading = false);
@@ -43,7 +73,8 @@ class ScanPageState extends State<ScanPage> {
       setState(() => _isRecording = false);
       final route = MaterialPageRoute(
         fullscreenDialog: true,
-        builder: (_) => PreviewPage(filePath: file.path),
+        builder: (_) => PreviewPage(file.path, text_name, text_id, text_dob,
+            text_gender, text_height, text_phone, text_profurl, text_weight),
       );
       Navigator.push(context, route);
     } else {
@@ -59,14 +90,11 @@ class ScanPageState extends State<ScanPage> {
       return Scaffold(
         appBar: AppBar(
           leading: BackButton(
-              onPressed: (){
+              onPressed: () {
                 Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            homescreen()));
+                    MaterialPageRoute(builder: (context) => homescreen()));
               },
-              color: Colors.black
-          ),
+              color: Colors.black),
           centerTitle: true,
           backgroundColor: Colors.green,
           title: Text('Record Video'),
@@ -82,14 +110,11 @@ class ScanPageState extends State<ScanPage> {
       return Scaffold(
         appBar: AppBar(
           leading: BackButton(
-              onPressed: (){
+              onPressed: () {
                 Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            homescreen()));
+                    MaterialPageRoute(builder: (context) => homescreen()));
               },
-              color: Colors.black
-          ),
+              color: Colors.black),
           centerTitle: true,
           backgroundColor: Colors.green,
           title: Text('Record Video'),

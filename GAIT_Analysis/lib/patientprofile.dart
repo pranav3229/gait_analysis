@@ -6,6 +6,7 @@ import 'package:gait_analysis/viewpatients.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'homescreen.dart';
+
 class patientprofile extends StatefulWidget {
   // const patientprofile({Key? key}) : super(key: key);
   late String text_name;
@@ -16,17 +17,8 @@ class patientprofile extends StatefulWidget {
   late String text_phone;
   late String text_profurl;
   late String text_weight;
-  patientprofile(
-      this.text_name,
-      this.text_id,
-      this.text_dob,
-      this.text_gender,
-      this.text_height,
-      this.text_phone,
-      this.text_profurl,
-      this.text_weight
-
-      );
+  patientprofile(this.text_name, this.text_id, this.text_dob, this.text_gender,
+      this.text_height, this.text_phone, this.text_profurl, this.text_weight);
 
   @override
   State<patientprofile> createState() => _patientprofileState(
@@ -37,9 +29,7 @@ class patientprofile extends StatefulWidget {
       this.text_height,
       this.text_phone,
       this.text_profurl,
-      this.text_weight
-
-  );
+      this.text_weight);
 }
 
 class _patientprofileState extends State<patientprofile> {
@@ -60,304 +50,368 @@ class _patientprofileState extends State<patientprofile> {
       this.text_height,
       this.text_phone,
       this.text_profurl,
-      this.text_weight
-      );
+      this.text_weight);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: BackButton(
-            onPressed: (){
-              Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          homescreen()));
-            },
-            color: Colors.black
+        appBar: AppBar(
+          leading: BackButton(
+              onPressed: () {
+                Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (context) => homescreen()));
+              },
+              color: Colors.black),
+          centerTitle: true,
+          backgroundColor: Colors.green,
+          title: Text('Patient Profile'),
         ),
-        centerTitle: true,
-        backgroundColor: Colors.green,
-        title: Text('Patient Profile'),
-      ),
-      body:  Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(
-              height:50
-            ),
-            Align(
-              alignment: Alignment.center,
-              child: CircleAvatar(
-                radius: 65,
-                backgroundImage:
-                NetworkImage(text_profurl),
-              ),
-            ),
-            SizedBox(height:20),
-            Align(
-              alignment: Alignment.center,
-              child: Container(
+        body: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(height: 50),
+              Align(
                 alignment: Alignment.center,
-                padding: EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  border: Border.all(width:5, color: Colors.green),
-                ),
-                // child: const Text(
-                //   "FlutterBeads",
-                //   style: TextStyle(fontSize: 34.0),
-                // ),
-                child: Column(
-                  children: [
-                  //  Text(
-                  //   'Name: ${text_name}',
-                  //   style: TextStyle(fontSize: 15),
-                  // ),
-                    Row(
-                      children: [
-                        Container(
-                          alignment: Alignment.topLeft,
-                          padding: EdgeInsets.all(3),
-                          decoration: BoxDecoration(
-                            border: Border.all(),
-                          ),
-
-                          child: Align(
-                            alignment: Alignment.topLeft,
-                            child: Text(
-                              'ID: ${text_id}',
-                              style: TextStyle(fontSize: 15),
-                            ),
-                          ),
-                        ),
-
-
-                      ],
-                    ),
-                    SizedBox(height:1),
-                    Row(
-                      children: [
-                        Container(
-                          alignment: Alignment.topLeft,
-                          padding: EdgeInsets.all(3),
-                          decoration: BoxDecoration(
-                            border: Border.all(),
-                          ),
-                          child: Align(
-                            alignment: Alignment.topLeft,
-                            child: Text(
-                              'Name: ${text_name}',
-                              style: TextStyle(fontSize: 15),
-                            ),
-                          ),
-                        ),
-
-                      ],
-                    ),
-                    SizedBox(height:1),
-                    Row(
-                      children: [
-
-                        Container(
-                          alignment: Alignment.topLeft,
-                          padding: EdgeInsets.all(3),
-                          decoration: BoxDecoration(
-                            border: Border.all(),
-                          ),
-
-                          child: Align(
-                            alignment: Alignment.topLeft,
-                            child: Text(
-                              'Height: ${text_height}',
-                              style: TextStyle(fontSize: 15),
-                            ),
-                          ),
-                        ),
-                        SizedBox(width:1),
-                        Container(
-                          alignment: Alignment.topLeft,
-                          padding: EdgeInsets.all(3),
-                          decoration: BoxDecoration(
-                            border: Border.all(),
-                          ),
-
-                          child: Align(
-                            alignment: Alignment.topLeft,
-                            child: Text(
-                              'Weight: ${text_weight}',
-                              style: TextStyle(fontSize: 15),
-                            ),
-                          ),
-                        ),
-
-                      ],
-                    ),
-                    SizedBox(height:1),
-                    Row(
-                      children: [
-                        Container(
-                          alignment: Alignment.topLeft,
-                          padding: EdgeInsets.all(3),
-                          decoration: BoxDecoration(
-                            border: Border.all(),
-                          ),
-
-                          child: Align(
-                            alignment: Alignment.topLeft,
-                            child: Text(
-                              'Gender: ${text_gender}',
-                              style: TextStyle(fontSize: 15),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height:1),
-                    Row(
-                      children: [
-                        Container(
-                          alignment: Alignment.topLeft,
-                          padding: EdgeInsets.all(3),
-                          decoration: BoxDecoration(
-                            border: Border.all(),
-                          ),
-
-                          child: Align(
-                            alignment: Alignment.topLeft,
-                            child: Text(
-                              'Phone Number: ${text_phone}',
-                              style: TextStyle(fontSize: 15),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    // SizedBox(height:5),
-                  ],
+                child: CircleAvatar(
+                  radius: 65,
+                  backgroundImage: NetworkImage(text_profurl),
                 ),
               ),
-            ),
-            SizedBox(height:10),
-            Row(
-              children: [
-                Container(
-                  height:300,
-                  width: 368,
-                  alignment: Alignment.topLeft,
+              SizedBox(height: 20),
+              Align(
+                alignment: Alignment.center,
+                child: Container(
+                  alignment: Alignment.center,
                   padding: EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    border: Border.all(width:5, color: Colors.green),
+                    border: Border.all(width: 5, color: Colors.green),
                   ),
+                  // child: const Text(
+                  //   "FlutterBeads",
+                  //   style: TextStyle(fontSize: 34.0),
+                  // ),
                   child: Column(
                     children: [
-                      Text('Video Log',
-                      style: TextStyle(fontSize: 30)
+                      //  Text(
+                      //   'Name: ${text_name}',
+                      //   style: TextStyle(fontSize: 15),
+                      // ),
+                      Row(
+                        children: [
+                          Container(
+                            alignment: Alignment.topLeft,
+                            padding: EdgeInsets.all(3),
+                            decoration: BoxDecoration(
+                              border: Border.all(),
+                            ),
+                            child: Align(
+                              alignment: Alignment.topLeft,
+                              child: Text(
+                                'ID: ${text_id}',
+                                style: TextStyle(fontSize: 15),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                      Divider(
-                        height: 20,
-                        thickness: 5,
-                        indent: 20,
-                        endIndent: 0,
-                        color: Colors.black,
+                      SizedBox(height: 1),
+                      Row(
+                        children: [
+                          Container(
+                            alignment: Alignment.topLeft,
+                            padding: EdgeInsets.all(3),
+                            decoration: BoxDecoration(
+                              border: Border.all(),
+                            ),
+                            child: Align(
+                              alignment: Alignment.topLeft,
+                              child: Text(
+                                'Name: ${text_name}',
+                                style: TextStyle(fontSize: 15),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                      SingleChildScrollView(
-                        child: Row(),
-                      )
+                      SizedBox(height: 1),
+                      Row(
+                        children: [
+                          Container(
+                            alignment: Alignment.topLeft,
+                            padding: EdgeInsets.all(3),
+                            decoration: BoxDecoration(
+                              border: Border.all(),
+                            ),
+                            child: Align(
+                              alignment: Alignment.topLeft,
+                              child: Text(
+                                'Height: ${text_height}',
+                                style: TextStyle(fontSize: 15),
+                              ),
+                            ),
+                          ),
+                          SizedBox(width: 1),
+                          Container(
+                            alignment: Alignment.topLeft,
+                            padding: EdgeInsets.all(3),
+                            decoration: BoxDecoration(
+                              border: Border.all(),
+                            ),
+                            child: Align(
+                              alignment: Alignment.topLeft,
+                              child: Text(
+                                'Weight: ${text_weight}',
+                                style: TextStyle(fontSize: 15),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 1),
+                      Row(
+                        children: [
+                          Container(
+                            alignment: Alignment.topLeft,
+                            padding: EdgeInsets.all(3),
+                            decoration: BoxDecoration(
+                              border: Border.all(),
+                            ),
+                            child: Align(
+                              alignment: Alignment.topLeft,
+                              child: Text(
+                                'Gender: ${text_gender}',
+                                style: TextStyle(fontSize: 15),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 1),
+                      Row(
+                        children: [
+                          Container(
+                            alignment: Alignment.topLeft,
+                            padding: EdgeInsets.all(3),
+                            decoration: BoxDecoration(
+                              border: Border.all(),
+                            ),
+                            child: Align(
+                              alignment: Alignment.topLeft,
+                              child: Text(
+                                'Phone Number: ${text_phone}',
+                                style: TextStyle(fontSize: 15),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      // SizedBox(height:5),
                     ],
                   ),
-
-                )
-              ],
-            ),
-            Row(
-              children: [
-                ElevatedButton(
-                  style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.green)),
-                  onPressed: ()async{
-                    Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                ScanPage()));
-
-
-                  },
-                  child: Text('Scan'),
                 ),
-                SizedBox(width:10),
-                ElevatedButton(
-                  style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.green)),
-                  onPressed: ()async{
-                    Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                editPatient(text_name, text_id, text_dob, text_gender, text_height, text_phone, text_profurl, text_weight)));
-
-
-                  },
-                  child: Text('Edit Patient'),
-                ),
-                SizedBox(width:10),
-                ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
-                  ),
-                  onPressed: () async {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          title: Text('Confirm Delete'),
-                          content: Text('Are you sure you want to delete this patient?'),
-                          actions: [
-                            TextButton(
-                              child: Text('Cancel'),
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                            TextButton(
-                              child: Text('Delete'),
-                              onPressed: () async {
-                                try {
-                                  // Get a reference to the document you want to delete
-                                  DocumentReference docRef =
-                                  FirebaseFirestore.instance.collection('patients').doc('${text_id}');
-                                  print(text_profurl);
-                                  final FirebaseStorage storage = FirebaseStorage.instance;
-                                  final ref = storage.refFromURL(text_profurl);
-                                  await ref.delete();
-                                  debugPrint('Image deleted successfully.');
-
-                                  // Delete the document
-                                  await docRef.delete();
-                                  print('Document deleted successfully');
-                                } catch (e) {
-                                  debugPrint('Error deleting image: $e');
-                                  print('Error deleting document: $e');
-                                }
-                                Navigator.of(context).pushReplacement(
-                                  MaterialPageRoute(
-                                    builder: (context) => patientview(),
-                                  ),
+              ),
+              SizedBox(height: 10),
+              Row(
+                children: [
+                  Container(
+                    height: 300,
+                    width: 368,
+                    alignment: Alignment.topLeft,
+                    padding: EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      border: Border.all(width: 5, color: Colors.green),
+                    ),
+                    child: Column(
+                      children: [
+                        Text('Video Log', style: TextStyle(fontSize: 30)),
+                        Divider(
+                          height: 20,
+                          thickness: 5,
+                          indent: 20,
+                          endIndent: 0,
+                          color: Colors.black,
+                        ),
+                        Container(
+                          height: MediaQuery.of(context).size.height * 0.5,
+                          child: StreamBuilder(
+                            stream: FirebaseFirestore.instance
+                                .collection('patients')
+                                .doc(text_id)
+                                .collection('videos')
+                                .snapshots(),
+                            builder: (context,
+                                AsyncSnapshot<QuerySnapshot> snapshot) {
+                              if (!snapshot.hasData) {
+                                return Center(
+                                  child: CircularProgressIndicator(),
                                 );
-                              },
-                            ),
-                          ],
-                        );
-                      },
-                    );
-                  },
-                  child: Text('Delete Patient'),
-                ),
+                              }
 
-              ],
+                              return ListView(
+                                shrinkWrap: true,
+                                children: snapshot.data!.docs.map((document) {
+                                  return Container(
+                                      height: 200,
+                                      child: Ink(
+                                        child: InkWell(
+                                          splashColor: Colors.tealAccent,
+                                          onTap: () {
+                                            // print(document.id);
+                                            // print(document['name']);
+                                            // print(document['dob']);
+                                            // print(document['gender']);
+                                            // print(document['height']);
+                                            // print(document['phone']);
+                                            // print(document['profile picture URL']);
+                                            // print(document['weight']);
+                                            // text_id = document.id;
+                                            // text_name = document['name'];
+                                            // text_dob = document['dob'];
+                                            // text_gender = document['gender'];
+                                            // text_height = document['height'];
+                                            // text_phone = document['phone'];
+                                            // text_profurl = document['profile picture URL'];
+                                            // text_weight = document['weight'];
+                                            Navigator.of(context)
+                                                .pushReplacement(
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            patientprofile(
+                                                                text_name,
+                                                                text_id,
+                                                                text_dob,
+                                                                text_gender,
+                                                                text_height,
+                                                                text_phone,
+                                                                text_profurl,
+                                                                text_weight)));
+                                          },
+                                          child: new Card(
+                                              child: Center(
+                                                  child: Column(
+                                            children: [
+                                              SizedBox(height: 25),
+                                              Text(document['url']),
+                                              SizedBox(height: 35),
+                                              // Text(document['date_created']
+                                              // .toString()),
+                                            ],
+                                          ))),
+                                        ),
+                                      ));
+                                }).toList(),
+                              );
+                            },
+                          ),
+                        )
+                      ],
+                    ),
+                  )
+                ],
+              ),
+              Row(
+                children: [
+                  ElevatedButton(
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all<Color>(Colors.green)),
+                    onPressed: () async {
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(
+                          builder: (context) => ScanPage(
+                              text_name,
+                              text_id,
+                              text_dob,
+                              text_gender,
+                              text_height,
+                              text_phone,
+                              text_profurl,
+                              text_weight)));
+                    },
+                    child: Text('Scan'),
+                  ),
+                  SizedBox(width: 10),
+                  ElevatedButton(
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all<Color>(Colors.green)),
+                    onPressed: () async {
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(
+                          builder: (context) => editPatient(
+                              text_name,
+                              text_id,
+                              text_dob,
+                              text_gender,
+                              text_height,
+                              text_phone,
+                              text_profurl,
+                              text_weight)));
+                    },
+                    child: Text('Edit Patient'),
+                  ),
+                  SizedBox(width: 10),
+                  ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(Colors.green),
+                    ),
+                    onPressed: () async {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text('Confirm Delete'),
+                            content: Text(
+                                'Are you sure you want to delete this patient?'),
+                            actions: [
+                              TextButton(
+                                child: Text('Cancel'),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                              TextButton(
+                                child: Text('Delete'),
+                                onPressed: () async {
+                                  try {
+                                    // Get a reference to the document you want to delete
+                                    DocumentReference docRef = FirebaseFirestore
+                                        .instance
+                                        .collection('patients')
+                                        .doc('${text_id}');
+                                    print(text_profurl);
+                                    final FirebaseStorage storage =
+                                        FirebaseStorage.instance;
+                                    final ref =
+                                        storage.refFromURL(text_profurl);
+                                    await ref.delete();
+                                    debugPrint('Image deleted successfully.');
 
-            ),
-
-          ],
-        ),
-      )
-    );
+                                    // Delete the document
+                                    await docRef.delete();
+                                    print('Document deleted successfully');
+                                  } catch (e) {
+                                    debugPrint('Error deleting image: $e');
+                                    print('Error deleting document: $e');
+                                  }
+                                  Navigator.of(context).pushReplacement(
+                                    MaterialPageRoute(
+                                      builder: (context) => patientview(),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
+                    child: Text('Delete Patient'),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ));
   }
 }

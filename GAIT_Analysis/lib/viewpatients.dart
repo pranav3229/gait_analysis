@@ -5,7 +5,6 @@ import 'package:gait_analysis/patientprofile.dart';
 
 import 'homescreen.dart';
 
-
 class patientviewstless extends StatelessWidget {
   const patientviewstless({Key? key}) : super(key: key);
 
@@ -43,22 +42,26 @@ class _patientviewState extends State<patientview> {
         color: Colors.white,
         fontSize: 20,
       ),
-      textInputAction: TextInputAction.search, //Specify the action button on the keyboard
-      decoration: InputDecoration( //Style of TextField
-        enabledBorder: UnderlineInputBorder( //Default TextField border
-            borderSide: BorderSide(color: Colors.white)
-        ),
-        focusedBorder: UnderlineInputBorder( //Borders when a TextField is in focus
-            borderSide: BorderSide(color: Colors.white)
-        ),
+      textInputAction:
+          TextInputAction.search, //Specify the action button on the keyboard
+      decoration: InputDecoration(
+        //Style of TextField
+        enabledBorder: UnderlineInputBorder(
+            //Default TextField border
+            borderSide: BorderSide(color: Colors.white)),
+        focusedBorder: UnderlineInputBorder(
+            //Borders when a TextField is in focus
+            borderSide: BorderSide(color: Colors.white)),
         hintText: 'Search', //Text that is displayed when nothing is entered.
-        hintStyle: TextStyle( //Style of hintText
+        hintStyle: TextStyle(
+          //Style of hintText
           color: Colors.white60,
           fontSize: 20,
         ),
       ),
     );
   }
+
   // Widget _defaultListView(){
   //   return StreamBuilder(
   //     stream: FirebaseFirestore.instance.collection('patients').orderBy('name').snapshots(),
@@ -145,9 +148,12 @@ class _patientviewState extends State<patientview> {
   //     },
   //   );
   // }
-  Widget _searchListView(){
+  Widget _searchListView() {
     return StreamBuilder(
-      stream: FirebaseFirestore.instance.collection('patients').orderBy('name').snapshots(),
+      stream: FirebaseFirestore.instance
+          .collection('patients')
+          .orderBy('name')
+          .snapshots(),
       builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (!snapshot.hasData) {
           return Center(
@@ -159,9 +165,17 @@ class _patientviewState extends State<patientview> {
 
         if (_searchController.text.isNotEmpty) {
           for (var document in documents) {
-            if (document['name'].toString().toLowerCase().contains(_searchController.text.toLowerCase()) ||
-                document.id.toLowerCase().contains(_searchController.text.toLowerCase()) ||
-                document['phone'].toString().toLowerCase().contains(_searchController.text.toLowerCase())) {
+            if (document['name']
+                    .toString()
+                    .toLowerCase()
+                    .contains(_searchController.text.toLowerCase()) ||
+                document.id
+                    .toLowerCase()
+                    .contains(_searchController.text.toLowerCase()) ||
+                document['phone']
+                    .toString()
+                    .toLowerCase()
+                    .contains(_searchController.text.toLowerCase())) {
               filteredDocuments.add(document);
             }
           }
@@ -181,39 +195,38 @@ class _patientviewState extends State<patientview> {
               backgroundColor: Colors.green,
               actions: !_searchBoolean
                   ? [
-                IconButton(
-                  // color: Colors.black,
-                    icon: Icon(Icons.search),
-                    onPressed: () {
-                      setState(() {
-                        _searchBoolean = true;
-                      });
-                    })
-              ]
+                      IconButton(
+                          // color: Colors.black,
+                          icon: Icon(Icons.search),
+                          onPressed: () {
+                            setState(() {
+                              _searchBoolean = true;
+                            });
+                          })
+                    ]
                   : [
-                IconButton(
-
-                    icon: Icon(Icons.clear),
-                    onPressed: () {
-                      setState(() {
-                        _searchBoolean = false;
-                      });
-                    }
-                )
-              ],
-              centerTitle: true
-              ,
-              title: !_searchBoolean ?Text('View Patients') :TextField(
-                controller: _searchController,
-                decoration: InputDecoration(
-                  hintText: 'Search',
-                  hintStyle: TextStyle(color: Colors.white),
-                ),
-                style: TextStyle(color: Colors.white),
-                onChanged: (value) {
-                  setState(() {});
-                },
-              ),
+                      IconButton(
+                          icon: Icon(Icons.clear),
+                          onPressed: () {
+                            setState(() {
+                              _searchBoolean = false;
+                            });
+                          })
+                    ],
+              centerTitle: true,
+              title: !_searchBoolean
+                  ? Text('View Patients')
+                  : TextField(
+                      controller: _searchController,
+                      decoration: InputDecoration(
+                        hintText: 'Search',
+                        hintStyle: TextStyle(color: Colors.white),
+                      ),
+                      style: TextStyle(color: Colors.white),
+                      onChanged: (value) {
+                        setState(() {});
+                      },
+                    ),
             ),
             Expanded(
               child: ListView.builder(
@@ -243,16 +256,17 @@ class _patientviewState extends State<patientview> {
                           text_phone = document['phone'];
                           text_profurl = document['profile picture URL'];
                           text_weight = document['weight'];
-                          Navigator.of(context).pushReplacement(MaterialPageRoute(
-                              builder: (context) => patientprofile(
-                                  text_name,
-                                  text_id,
-                                  text_dob,
-                                  text_gender,
-                                  text_height,
-                                  text_phone,
-                                  text_profurl,
-                                  text_weight)));
+                          Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                  builder: (context) => patientprofile(
+                                      text_name,
+                                      text_id,
+                                      text_dob,
+                                      text_gender,
+                                      text_height,
+                                      text_phone,
+                                      text_profurl,
+                                      text_weight)));
                         },
                         child: Card(
                           child: Center(
@@ -264,7 +278,6 @@ class _patientviewState extends State<patientview> {
                                 Text('Phone number: ${document['phone']}'),
                                 SizedBox(height: 25),
                                 Text('ID: ${document.id}'),
-
                               ],
                             ),
                           ),
@@ -280,9 +293,9 @@ class _patientviewState extends State<patientview> {
       },
     );
   }
+
   final TextEditingController _searchController = TextEditingController();
   String _searchQuery = '';
-
 
   @override
   Widget build(BuildContext context) {
@@ -381,7 +394,6 @@ class _patientviewState extends State<patientview> {
         //     );
         //   },
         // ),
-
       ),
     );
   }
