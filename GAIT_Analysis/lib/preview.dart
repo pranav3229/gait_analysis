@@ -11,8 +11,22 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
+import 'package:flutter_ffmpeg/flutter_ffmpeg.dart';
 late String logurl;
+Future<String> ReduceSizeAndType(videoPath, outDirPath) async {
+    assert(File(videoPath).existsSync());
+    final FlutterFFmpeg _flutterFFmpeg = new FlutterFFmpeg();
+    final arguments = '-y -i $videoPath ' +
+        '-preset ultrafast -g 48 -sc_threshold 0 ' +
+        '-c:v libx264 -b:v 720k ' +
+        '-c:a copy ' +
+        '"$outDirPath/file2.mp4"';
+
+    final int rc = await _flutterFFmpeg.execute(arguments);
+    assert(rc == 0);
+
+    return outDirPath;
+  }
 
 class MyHttpOverrides extends HttpOverrides {
   @override
@@ -170,8 +184,9 @@ class PreviewPageState extends State<PreviewPage> {
           IconButton(
             icon: const Icon(Icons.check),
             onPressed: () async {
-              XFile? video =
-                  await ImagePicker().pickVideo(source: ImageSource.gallery);
+              XFile? video = await ImagePicker().pickVideo(source: ImageSource.camera);
+              ReduceSizeAndType(video!.path, video!.path);
+              print("Reduced Video!!!");
               // print('do something with the file');
               // sendVideo("https://172.20.17.92:5000/success", File(widget.filePath));
               sendVideo("https://172.20.17.92:5000/success", File(video!.path));
