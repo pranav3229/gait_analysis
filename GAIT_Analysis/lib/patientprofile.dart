@@ -2,10 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gait_analysis/editPatient.dart';
 import 'package:gait_analysis/scan.dart';
+import 'package:gait_analysis/videoplayerpage.dart';
 import 'package:gait_analysis/viewpatients.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'homescreen.dart';
+import 'package:video_player/video_player.dart';
 
 class patientprofile extends StatefulWidget {
   // const patientprofile({Key? key}) : super(key: key);
@@ -51,6 +53,8 @@ class _patientprofileState extends State<patientprofile> {
       this.text_phone,
       this.text_profurl,
       this.text_weight);
+  String videoUrl = '';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -214,98 +218,96 @@ class _patientprofileState extends State<patientprofile> {
               SizedBox(height: 10),
               Row(
                 children: [
-                  Container(
-                    height: 300,
-                    width: 368,
-                    alignment: Alignment.topLeft,
-                    padding: EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      border: Border.all(width: 5, color: Colors.green),
-                    ),
-                    child: Column(
-                      children: [
-                        Text('Video Log', style: TextStyle(fontSize: 30)),
-                        Divider(
-                          height: 20,
-                          thickness: 5,
-                          indent: 20,
-                          endIndent: 0,
-                          color: Colors.black,
-                        ),
-                        Container(
-                          height: MediaQuery.of(context).size.height * 0.5,
-                          child: StreamBuilder(
-                            stream: FirebaseFirestore.instance
-                                .collection('patients')
-                                .doc(text_id)
-                                .collection('videos')
-                                .snapshots(),
-                            builder: (context,
-                                AsyncSnapshot<QuerySnapshot> snapshot) {
-                              if (!snapshot.hasData) {
-                                return Center(
-                                  child: CircularProgressIndicator(),
-                                );
-                              }
-
-                              return ListView(
-                                shrinkWrap: true,
-                                children: snapshot.data!.docs.map((document) {
-                                  return Container(
-                                      height: 200,
-                                      child: Ink(
-                                        child: InkWell(
-                                          splashColor: Colors.tealAccent,
-                                          onTap: () {
-                                            // print(document.id);
-                                            // print(document['name']);
-                                            // print(document['dob']);
-                                            // print(document['gender']);
-                                            // print(document['height']);
-                                            // print(document['phone']);
-                                            // print(document['profile picture URL']);
-                                            // print(document['weight']);
-                                            // text_id = document.id;
-                                            // text_name = document['name'];
-                                            // text_dob = document['dob'];
-                                            // text_gender = document['gender'];
-                                            // text_height = document['height'];
-                                            // text_phone = document['phone'];
-                                            // text_profurl = document['profile picture URL'];
-                                            // text_weight = document['weight'];
-                                            Navigator.of(context)
-                                                .pushReplacement(
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            patientprofile(
-                                                                text_name,
-                                                                text_id,
-                                                                text_dob,
-                                                                text_gender,
-                                                                text_height,
-                                                                text_phone,
-                                                                text_profurl,
-                                                                text_weight)));
-                                          },//hello
-                                          child: new Card(
-                                              child: Center(
-                                                  child: Column(
-                                            children: [
-                                              SizedBox(height: 25),
-                                              Text(document['url']),
-                                              SizedBox(height: 35),
-                                              // Text(document['date_created']
-                                              // .toString()),
-                                            ],
-                                          ))),
-                                        ),
-                                      ));
-                                }).toList(),
+                  Expanded(
+                    child: Container(
+                      height: 300,
+                      width: 368,
+                      alignment: Alignment.topLeft,
+                      padding: EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        border: Border.all(width: 5, color: Colors.green),
+                      ),
+                      child: Container(
+                        height: MediaQuery.of(context).size.height * 0.5,
+                        child: StreamBuilder(
+                          stream: FirebaseFirestore.instance
+                              .collection('patients')
+                              .doc(text_id)
+                              .collection('videos')
+                              .snapshots(),
+                          builder:
+                              (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                            if (!snapshot.hasData) {
+                              return Center(
+                                child: CircularProgressIndicator(),
                               );
-                            },
-                          ),
-                        )
-                      ],
+                            }
+
+                            return ListView(
+                              shrinkWrap: true,
+                              children: snapshot.data!.docs.map((document) {
+                                return Container(
+                                    height: 35,
+                                    child: Ink(
+                                      child: InkWell(
+                                        splashColor: Colors.tealAccent,
+                                        onTap: () {
+                                          // print(document.id);
+                                          // print(document['name']);
+                                          // print(document['dob']);
+                                          // print(document['gender']);
+                                          // print(document['height']);
+                                          // print(document['phone']);
+                                          // print(document['profile picture URL']);
+                                          // print(document['weight']);
+                                          // text_id = document.id;
+                                          // text_name = document['name'];
+                                          // text_dob = document['dob'];
+                                          // text_gender = document['gender'];
+                                          // text_height = document['height'];
+                                          // text_phone = document['phone'];
+                                          // text_profurl = document['profile picture URL'];
+                                          // text_weight = document['weight'];
+                                          // Navigator.of(context).pushReplacement(
+                                          //     MaterialPageRoute(
+                                          //         builder: (context) =>
+                                          //             patientprofile(
+                                          //                 text_name,
+                                          //                 text_id,
+                                          //                 text_dob,
+                                          //                 text_gender,
+                                          //                 text_height,
+                                          //                 text_phone,
+                                          //                 text_profurl,
+                                          //                 text_weight)));
+                                          Navigator.of(context).pushReplacement(
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      VideoPlayerPage(
+                                                          videoUrl: document[
+                                                              'url'])));
+                                        }, //hello
+                                        child: new Card(
+                                            color: Colors.tealAccent,
+                                            child: Center(
+                                                child: Column(
+                                              children: [
+                                                // SizedBox(height: 25),
+                                                // Text(document['url']),
+                                                // SizedBox(height: 35),
+                                                Text(document['date_created']
+                                                    .toDate()
+                                                    .toString())
+                                                // .toString()),
+                                              ],
+                                            ))),
+                                      ),
+                                    ));
+                              }).toList(),
+                            );
+                          },
+                        ),
+                      ),
                     ),
                   )
                 ],
