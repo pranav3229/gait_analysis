@@ -100,8 +100,10 @@ class PreviewPageState extends State<PreviewPage> {
     final response = await http.get(Uri.parse(videoUrl));
     final bytes = response.bodyBytes;
     final fileName = desiredName;
+    DateTime now = new DateTime.now();
+    DateTime date = new DateTime(now.year, now.month, now.day);
     final reference =
-        FirebaseStorage.instance.ref().child("videos/${desiredName}.mp4");
+        FirebaseStorage.instance.ref().child("videos/${desiredName+date.toString()!}.mp4");
     final uploadTask = reference.putData(bytes);
     final snapshot =
         await uploadTask.whenComplete(() => print('Video uploaded'));
