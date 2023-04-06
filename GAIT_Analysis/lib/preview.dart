@@ -171,12 +171,37 @@ class PreviewPageState extends State<PreviewPage> {
     super.dispose();
   }
 
-  Future _initVideoPlayer() async {
+  // Future _initVideoPlayer() async {
+  //   _videoPlayerController = VideoPlayerController.file(File(widget.filePath));
+  //   await _videoPlayerController.initialize();
+  //   await _videoPlayerController.setLooping(true);
+  //   await _videoPlayerController.play();
+  // }
+  Future<void> _initVideoPlayer() async {
     _videoPlayerController = VideoPlayerController.file(File(widget.filePath));
     await _videoPlayerController.initialize();
     await _videoPlayerController.setLooping(true);
+
+    // Add these lines of code to prevent elongation of the video
+    final videoSize = _videoPlayerController.value.size;
+    final videoWidth = videoSize.width;
+    final videoHeight = videoSize.height;
+    final aspectRatio = videoWidth / videoHeight;
+    final screenAspectRatio = MediaQuery.of(context).size.width / MediaQuery.of(context).size.height;
+    double targetWidth;
+    double targetHeight;
+    if (aspectRatio > screenAspectRatio) {
+      targetWidth = MediaQuery.of(context).size.width;
+      targetHeight = targetWidth / aspectRatio;
+    } else {
+      targetHeight = MediaQuery.of(context).size.height;
+      targetWidth = targetHeight * aspectRatio;
+    }
+
+    await _videoPlayerController.setVolume(1.0);
     await _videoPlayerController.play();
   }
+
 
   @override
   Widget build(BuildContext context) {
