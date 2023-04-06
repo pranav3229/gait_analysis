@@ -1,4 +1,5 @@
 //import 'dart:html';
+//not in use
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:gait_analysis/homescreen.dart';
@@ -73,7 +74,7 @@ class ScanPageState extends State<ScanPage> {
       setState(() => _isRecording = false);
       final route = MaterialPageRoute(
         fullscreenDialog: true,
-        builder: (_) => PreviewPage(file.path, text_name, text_id, text_dob,
+        builder: (_) => PreviewPage(file.path,text_name, text_id, text_dob,
             text_gender, text_height, text_phone, text_profurl, text_weight),
       );
       Navigator.push(context, route);

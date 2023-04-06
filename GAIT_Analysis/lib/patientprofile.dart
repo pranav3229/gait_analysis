@@ -1,12 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gait_analysis/editPatient.dart';
+import 'package:gait_analysis/preview.dart';
 import 'package:gait_analysis/scan.dart';
 import 'package:gait_analysis/videoplayerpage.dart';
 import 'package:gait_analysis/viewpatients.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'homescreen.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:video_player/video_player.dart';
 
 class patientprofile extends StatefulWidget {
@@ -319,8 +321,10 @@ class _patientprofileState extends State<patientprofile> {
                         backgroundColor:
                             MaterialStateProperty.all<Color>(Colors.green)),
                     onPressed: () async {
+                      XFile? video = await ImagePicker().pickVideo(source: ImageSource.camera);
                       Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (context) => ScanPage(
+                          builder: (context) => PreviewPage(
+                              video!.path,
                               text_name,
                               text_id,
                               text_dob,

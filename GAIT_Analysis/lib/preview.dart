@@ -189,12 +189,12 @@ class PreviewPageState extends State<PreviewPage> {
           IconButton(
             icon: const Icon(Icons.check),
             onPressed: () async {
-              XFile? video = await ImagePicker().pickVideo(source: ImageSource.camera);
+              // XFile? video = await ImagePicker().pickVideo(source: ImageSource.camera);
               // ReduceSizeAndType(video!.path, video!.path);
               // print("Reduced Video!!!");
               // print('do something with the file');
-              // sendVideo("https://172.20.17.92:5000/success", File(widget.filePath));
-              sendVideo("https://172.20.17.92:5000/success", File(video!.path));
+              sendVideo("https://172.20.17.92:5000/success", File(widget.filePath));
+              // sendVideo("https://172.20.17.92:5000/success", File(video!.path));
 
               Navigator.of(context).pushReplacement(MaterialPageRoute(
                   builder: (context) => patientprofile(
