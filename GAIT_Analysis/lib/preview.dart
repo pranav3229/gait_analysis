@@ -171,23 +171,20 @@ class PreviewPageState extends State<PreviewPage> {
     super.dispose();
   }
 
-  // Future _initVideoPlayer() async {
-  //   _videoPlayerController = VideoPlayerController.file(File(widget.filePath));
-  //   await _videoPlayerController.initialize();
-  //   await _videoPlayerController.setLooping(true);
-  //   await _videoPlayerController.play();
-  // }
   Future<void> _initVideoPlayer() async {
-    _videoPlayerController = VideoPlayerController.file(File(widget.filePath));
+    _videoPlayerController = VideoPlayerController.file(File(filePath));
     await _videoPlayerController.initialize();
     await _videoPlayerController.setLooping(true);
 
-    // Add these lines of code to prevent elongation of the video
     final videoSize = _videoPlayerController.value.size;
     final videoWidth = videoSize.width;
     final videoHeight = videoSize.height;
     final aspectRatio = videoWidth / videoHeight;
+
+    // Get the screen's aspect ratio
     final screenAspectRatio = MediaQuery.of(context).size.width / MediaQuery.of(context).size.height;
+
+    // Calculate the target width and height of the video to maintain aspect ratio
     double targetWidth;
     double targetHeight;
     if (aspectRatio > screenAspectRatio) {
@@ -198,10 +195,10 @@ class PreviewPageState extends State<PreviewPage> {
       targetWidth = targetHeight * aspectRatio;
     }
 
+    // Set the video player's volume and play it
     await _videoPlayerController.setVolume(1.0);
     await _videoPlayerController.play();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -214,12 +211,7 @@ class PreviewPageState extends State<PreviewPage> {
           IconButton(
             icon: const Icon(Icons.check),
             onPressed: () async {
-              // XFile? video = await ImagePicker().pickVideo(source: ImageSource.camera);
-              // ReduceSizeAndType(video!.path, video!.path);
-              // print("Reduced Video!!!");
-              // print('do something with the file');
-              sendVideo("https://172.20.17.92:5000/success", File(widget.filePath));
-              // sendVideo("https://172.20.17.92:5000/success", File(video!.path));
+              sendVideo("https://172.20.17.92:5000/success", File(filePath));
 
               Navigator.of(context).pushReplacement(MaterialPageRoute(
                   builder: (context) => patientprofile(
@@ -230,23 +222,26 @@ class PreviewPageState extends State<PreviewPage> {
                       text_height,
                       text_phone,
                       text_profurl,
-                      // logurl,
                       text_weight)));
             },
           )
         ],
       ),
-      extendBodyBehindAppBar: true,
       body: FutureBuilder(
         future: _initVideoPlayer(),
         builder: (context, state) {
           if (state.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           } else {
-            return VideoPlayer(_videoPlayerController);
+            return AspectRatio(
+              aspectRatio: _videoPlayerController.value.aspectRatio,
+              child: VideoPlayer(_videoPlayerController),
+            );
           }
         },
       ),
     );
   }
+
+
 }
