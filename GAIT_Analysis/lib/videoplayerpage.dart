@@ -1,19 +1,28 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 import 'package:gait_analysis/viewpatients.dart';
 
 class VideoPlayerPage extends StatefulWidget {
-  final String videoUrl;
+  late String videoUrl;
+  late String text_id;
+  late String video_id;
 
-  const VideoPlayerPage({Key? key, required this.videoUrl}) : super(key: key);
-
+  // const VideoPlayerPage({Key? key, required this.videoUrl}) : super(key: key);
+  VideoPlayerPage(this.videoUrl, this.text_id,  this.video_id);
   @override
-  _VideoPlayerPageState createState() => _VideoPlayerPageState();
+  _VideoPlayerPageState createState() =>
+      _VideoPlayerPageState(this.videoUrl, this.text_id,this.video_id);
 }
 
 class _VideoPlayerPageState extends State<VideoPlayerPage> {
+  late String videoUrl;
+  late String text_id;
+  late String video_id;
   late VideoPlayerController _controller;
   bool _isPlaying = false;
+  _VideoPlayerPageState(this.videoUrl, this.text_id,this.video_id);
 
   @override
   void initState() {
@@ -98,6 +107,61 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
                       });
                     },
                   ),
+                  SizedBox(width: 30),
+                  ElevatedButton(
+                      onPressed: () async {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text('Confirm Delete'),
+                              content: Text(
+                                  'Are you sure you want to delete this video?'),
+                              actions: [
+                                TextButton(
+                                  child: Text('Cancel'),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                                TextButton(
+                                  child: Text('Delete'),
+                                  onPressed: () async {
+                                    try {
+                                      // Get a reference to the document you want to delete
+                                      DocumentReference docRef =
+                                          FirebaseFirestore.instance
+                                              .collection('patients')
+                                              .doc('${text_id}')
+                                              .collection('videos')
+                                              .doc('${video_id}');
+                                      // print(text_profurl);
+                                      final FirebaseStorage storage =
+                                          FirebaseStorage.instance;
+                                      final ref = storage.refFromURL(videoUrl);
+                                      await ref.delete();
+                                      debugPrint('Image deleted successfully.');
+
+                                      // Delete the document
+                                      await docRef.delete();
+                                      print('Document deleted successfully');
+                                    } catch (e) {
+                                      debugPrint('Error deleting image: $e');
+                                      print('Error deleting document: $e');
+                                    }
+                                    Navigator.of(context).pushReplacement(
+                                      MaterialPageRoute(
+                                        builder: (context) => patientview(),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      },
+                      child: Text("Delete Video")),
                 ],
               ),
             ),

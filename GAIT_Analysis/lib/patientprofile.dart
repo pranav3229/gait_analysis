@@ -286,8 +286,8 @@ class _patientprofileState extends State<patientprofile> {
                                               MaterialPageRoute(
                                                   builder: (context) =>
                                                       VideoPlayerPage(
-                                                          videoUrl: document[
-                                                              'url'])));
+                                                           document[
+                                                              'url'],text_id,document.id)));
                                         }, //hello
                                         child: new Card(
                                             color: Colors.tealAccent,
