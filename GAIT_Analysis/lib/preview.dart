@@ -102,8 +102,9 @@ class PreviewPageState extends State<PreviewPage> {
     final fileName = desiredName;
     DateTime now = new DateTime.now();
     DateTime date = new DateTime(now.year, now.month, now.day);
-    final reference =
-        FirebaseStorage.instance.ref().child("videos/${desiredName+date.toString()!}.mp4");
+    final reference = FirebaseStorage.instance
+        .ref()
+        .child("videos/${desiredName + now.toString()}.mp4");
     final uploadTask = reference.putData(bytes);
     final snapshot =
         await uploadTask.whenComplete(() => print('Video uploaded'));
@@ -127,7 +128,7 @@ class PreviewPageState extends State<PreviewPage> {
           'Content-Length': videoFile.lengthSync().toString(),
           'Connection': 'keep-alive',
           'Accept-Encoding': 'gzip, deflate, br',
-          'Content-Type' : 'video/mp4'
+          'Content-Type': 'video/mp4'
         },
         body: videoFile.readAsBytesSync(),
       );
@@ -135,7 +136,7 @@ class PreviewPageState extends State<PreviewPage> {
       // check response status code
       if (response.statusCode == 200) {
         print('Video sent successfully!');
-        uploadVideo('https://172.20.17.92:5000/download', text_id);
+        uploadVideo('https://172.20.17.92:443/download', text_id);
         print(response.statusCode);
       } else {
         print(
@@ -161,7 +162,7 @@ class PreviewPageState extends State<PreviewPage> {
     // Create a new document with url and date created fields
     await collectionRef.add({
       'url': '${logurl}',
-      'date_created': date,
+      'date_created': now,
     });
   }
 
@@ -182,7 +183,8 @@ class PreviewPageState extends State<PreviewPage> {
     final aspectRatio = videoWidth / videoHeight;
 
     // Get the screen's aspect ratio
-    final screenAspectRatio = MediaQuery.of(context).size.width / MediaQuery.of(context).size.height;
+    final screenAspectRatio =
+        MediaQuery.of(context).size.width / MediaQuery.of(context).size.height;
 
     // Calculate the target width and height of the video to maintain aspect ratio
     double targetWidth;
@@ -211,7 +213,7 @@ class PreviewPageState extends State<PreviewPage> {
           IconButton(
             icon: const Icon(Icons.check),
             onPressed: () async {
-              sendVideo("https://172.20.17.92:5000/success", File(filePath));
+              sendVideo("https://172.20.17.92:443/success", File(filePath));
 
               Navigator.of(context).pushReplacement(MaterialPageRoute(
                   builder: (context) => patientprofile(
@@ -242,6 +244,4 @@ class PreviewPageState extends State<PreviewPage> {
       ),
     );
   }
-
-
 }
