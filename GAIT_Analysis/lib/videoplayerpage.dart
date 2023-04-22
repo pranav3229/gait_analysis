@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:gait_analysis/viewreports.dart';
 import 'package:video_player/video_player.dart';
 import 'package:gait_analysis/viewpatients.dart';
 
@@ -8,21 +9,23 @@ class VideoPlayerPage extends StatefulWidget {
   late String videoUrl;
   late String text_id;
   late String video_id;
+  late String text_name;
 
   // const VideoPlayerPage({Key? key, required this.videoUrl}) : super(key: key);
-  VideoPlayerPage(this.videoUrl, this.text_id,  this.video_id);
+  VideoPlayerPage(this.videoUrl, this.text_id,  this.video_id,this.text_name);
   @override
   _VideoPlayerPageState createState() =>
-      _VideoPlayerPageState(this.videoUrl, this.text_id,this.video_id);
+      _VideoPlayerPageState(this.videoUrl, this.text_id,this.video_id,this.text_name);
 }
 
 class _VideoPlayerPageState extends State<VideoPlayerPage> {
   late String videoUrl;
   late String text_id;
   late String video_id;
+  late String text_name;
   late VideoPlayerController _controller;
   bool _isPlaying = false;
-  _VideoPlayerPageState(this.videoUrl, this.text_id,this.video_id);
+  _VideoPlayerPageState(this.videoUrl, this.text_id,this.video_id,this.text_name);
 
   @override
   void initState() {
@@ -51,12 +54,16 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
             color: Colors.black),
         centerTitle: true,
         backgroundColor: Colors.green,
-        title: Text('Patient Profile'),
+        title: Text('Patient Video'),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            SizedBox(height: 20),
+            Text(" Name: ${text_name}"),
+            SizedBox(width: 20),
+            Text("Patient ID: ${text_id}"),
             Expanded(
               child: Stack(
                 alignment: Alignment.center,
@@ -106,6 +113,18 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
                         }
                       });
                     },
+                  ),
+                  SizedBox(width: 30),
+                  ElevatedButton(
+                      onPressed: ()async{
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                            builder: (context) => viewreports(text_id,videoUrl,video_id,text_name),
+                          ),
+                        );
+
+                  },
+                      child: Text('View Reports'),
                   ),
                   SizedBox(width: 30),
                   ElevatedButton(
