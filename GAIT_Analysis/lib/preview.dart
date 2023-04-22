@@ -136,7 +136,7 @@ class PreviewPageState extends State<PreviewPage> {
       // check response status code
       if (response.statusCode == 200) {
         print('Video sent successfully!');
-        uploadVideo('https://172.20.17.92:443/download', text_id);
+        uploadVideo('http://103.144.92.62/download', text_id);
         print(response.statusCode);
       } else {
         print(
@@ -213,7 +213,7 @@ class PreviewPageState extends State<PreviewPage> {
           IconButton(
             icon: const Icon(Icons.check),
             onPressed: () async {
-              sendVideo("https://172.20.17.92:443/success", File(filePath));
+              sendVideo("http://103.144.92.62/success", File(filePath));
 
               Navigator.of(context).pushReplacement(MaterialPageRoute(
                   builder: (context) => patientprofile(
