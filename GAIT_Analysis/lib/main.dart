@@ -90,128 +90,130 @@ class _MyHomePageState extends State<MyHomePage> {
 
         child: Padding(
           padding: const EdgeInsets.all(20),
-          child: Column(
+          child: SingleChildScrollView(
+            child: Column(
 
 
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              // SvgPicture.asset(
-              //   'lib/assets/logo.svg',
-              //   width: 200,
-              //   height: 200,
-              // ),
-              Image(
-                image: AssetImage('lib/assets/logo.png'),
-                height:200,
-                width:200,
-              ),
-              SizedBox(height:50),
-              Container(
-                  color: Colors.white,
-                height: 316,
-                width: 318,
-                child: Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                // SvgPicture.asset(
+                //   'lib/assets/logo.svg',
+                //   width: 200,
+                //   height: 200,
+                // ),
+                Image(
+                  image: AssetImage('lib/assets/logo.png'),
+                  height:200,
+                  width:200,
+                ),
+                SizedBox(height:50),
+                Container(
+                    color: Colors.white,
+                  height: 316,
+                  width: 318,
+                  child: Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
 
-                      TextField(
-                        controller: username,
-                        keyboardType: TextInputType.emailAddress,
-                        decoration: InputDecoration(hintText: 'Enter the username'),
-                      ),
-                      // TextField(
-                      //   obscureText: true,
-                      //   controller: password,
-                      //   decoration: InputDecoration(hintText: 'Enter the password'),
-                      // ),
-                      TextField(
-                        obscureText: _obscureText,
-                        controller: password,
-                        decoration: InputDecoration(
-                          hintText: 'Enter the password',
-                          suffixIcon: IconButton(
-                            icon: Icon(_obscureText ? Icons.visibility : Icons.visibility_off),
-                            onPressed: () {
-                              setState(() {
-                                _obscureText = !_obscureText;
-                              });
-                            },
+                        TextField(
+                          controller: username,
+                          keyboardType: TextInputType.emailAddress,
+                          decoration: InputDecoration(hintText: 'Enter the username'),
+                        ),
+                        // TextField(
+                        //   obscureText: true,
+                        //   controller: password,
+                        //   decoration: InputDecoration(hintText: 'Enter the password'),
+                        // ),
+                        TextField(
+                          obscureText: _obscureText,
+                          controller: password,
+                          decoration: InputDecoration(
+                            hintText: 'Enter the password',
+                            suffixIcon: IconButton(
+                              icon: Icon(_obscureText ? Icons.visibility : Icons.visibility_off),
+                              onPressed: () {
+                                setState(() {
+                                  _obscureText = !_obscureText;
+                                });
+                              },
+                            ),
                           ),
                         ),
-                      ),
-                      SizedBox(height:50),
-                      // FloatingActionButton(onPressed: () async{
-                      //
-                      // },
-                      //   tooltip: 'Sign In',
-                      //   child: const Icon(Icons.login),
-                      // )
-                      SizedBox(
-                        width:211,
-                        height: 56,
+                        SizedBox(height:50),
+                        // FloatingActionButton(onPressed: () async{
+                        //
+                        // },
+                        //   tooltip: 'Sign In',
+                        //   child: const Icon(Icons.login),
+                        // )
+                        SizedBox(
+                          width:211,
+                          height: 56,
 
-                        child: ElevatedButton(
-                            style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.deepOrangeAccent)),
-                            onPressed: ()async{
-                              setState(() {
-                                yeet=true;
-                              });
-
-
-                              try {
-                                final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
-                                  email: username.text,
-                                  password: password.text,
-                                );
-
-
-
-
-                                FirebaseAuth.instance
-                                    .userChanges()
-                                    .listen((User? user) {
-                                  if (user == null) {
-                                    print('User is currently signed out!');
-                                  } else {
-                                    Navigator.of(context).pushReplacement(
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                homescreen()));
-                                    // !!!!! Here you know the user is signed-in !!!!!
-                                    print('User is signed in!');
-                                  }
+                          child: ElevatedButton(
+                              style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.deepOrange)),
+                              onPressed: ()async{
+                                setState(() {
+                                  yeet=true;
                                 });
 
-                              } on FirebaseAuthException catch (e) {
-                                if (e.code == 'user-not-found') {
-                                  print('No user found for that email.');
-                                } else if (e.code == 'wrong-password') {
-                                  print('Wrong password provided for that user.');
+
+                                try {
+                                  final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+                                    email: username.text,
+                                    password: password.text,
+                                  );
+
+
+
+
+                                  FirebaseAuth.instance
+                                      .userChanges()
+                                      .listen((User? user) {
+                                    if (user == null) {
+                                      print('User is currently signed out!');
+                                    } else {
+                                      Navigator.of(context).pushReplacement(
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  homescreen()));
+                                      // !!!!! Here you know the user is signed-in !!!!!
+                                      print('User is signed in!');
+                                    }
+                                  });
+
+                                } on FirebaseAuthException catch (e) {
+                                  if (e.code == 'user-not-found') {
+                                    print('No user found for that email.');
+                                  } else if (e.code == 'wrong-password') {
+                                    print('Wrong password provided for that user.');
+                                  }
                                 }
-                              }
 
-                            },
+                              },
 
-                            child: const Text('Login')),
+                              child: const Text('Login')),
 
-                      ),
-                      SizedBox(height:20),
-                      Visibility(
-                          visible: yeet,
-                          child: CircularProgressIndicator())
-                    ],
-                  ),
-                )
-              ),
-
+                        ),
+                        SizedBox(height:20),
+                        Visibility(
+                            visible: yeet,
+                            child: CircularProgressIndicator())
+                      ],
+                    ),
+                  )
+                ),
 
 
 
 
 
-            ],
+
+              ],
+            ),
           ),
         ),
       ),

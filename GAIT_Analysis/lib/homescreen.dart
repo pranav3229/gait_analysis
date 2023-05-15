@@ -23,18 +23,31 @@ class _homescreenState extends State<homescreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFFFE5B4),
       appBar: AppBar(
+          elevation: 0,
         leading: ElevatedButton(
             onPressed: (){
               signOut();
             },
-            style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.green)),
-        child: Icon(Icons.logout),
+            style: ButtonStyle(
+                elevation: MaterialStateProperty.all(0),
+                backgroundColor: MaterialStateProperty.all<Color>(Color(0xFFFFE5B4))),
+        child: Icon(Icons.arrow_back_ios,
+          color: Colors.black,
+        ),
         ),
 
         centerTitle: true,
-        backgroundColor: Colors.green,
-        title: Text('Please select an option'),
+        backgroundColor: Color(0xFFFFE5B4),
+        title: Text(
+          'Select an option',
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 35
+
+          ),
+        )
       ),
       body: Center(
         child:
@@ -44,69 +57,92 @@ class _homescreenState extends State<homescreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Row(children: [
-                   SizedBox(
-                   height:200,
-                 ),
+                // SizedBox(
+                // height:150,
+                //  ),
                 SizedBox(
-                  height:150,
-                  width:150,
+                  height:125,
+                  width:310,
                   child: ElevatedButton(
-                    style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.green)),
-                    onPressed: ()async{
-                    Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(
-                            builder: (context) => NewPatientForm()));
+                 style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.deepOrange)),
+                 onPressed: ()async{
+                 Navigator.of(context).pushReplacement(
+                     MaterialPageRoute(
+                         builder: (context) => NewPatientForm()));
 
                   },
-                      child: Text('New Patient'),
+                   child: Text('New Patient'),
                   ),
                 ),
                 SizedBox(
-                  height:200,
+                  height:10,
                   width : 10
                 ),
                 SizedBox(
-                  height:150,
-                  width:150,
+                  height:125,
+                  width:310,
                   child: ElevatedButton(
-                      style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.green)),
+                    style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.deepOrange)),
                     onPressed: ()async{
 
-                    Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(
-                            builder: (context) => const patientview()));
+                      Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                              builder: (context) => const patientview()));
 
-                  },
+                    },
                     child: Text('View Patients'),
                   ),
                 ),
-
-                ]),
                 Row(children: [
                   SizedBox(
                     height:200,
                   ),
-                SizedBox(
-                  height:150,
-                  width:150,
-                  child: ElevatedButton(
-                    style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.green)),
-                    onPressed: ()async{
 
-
-                  },
-                    child: Text('Settings'),
+                  SizedBox(
+                    height: 150,
+                    width: 150,
+                    child: ElevatedButton(
+                      onPressed: () async {},
+                      child: Text(
+                        'Settings',
+                        style: TextStyle(
+                          color: Colors.deepOrange,
+                        ),
+                      ),
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(Color(0xFFFFE5B3)),
+                        shape: MaterialStateProperty.all<OutlinedBorder>(
+                          RoundedRectangleBorder(
+                            side: BorderSide(
+                              color: Colors.deepOrange,
+                            ),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        elevation: MaterialStateProperty.all<double>(0),
+                      ),
+                    ),
                   ),
-                ),
-                SizedBox(
+
+                  SizedBox(
                   height:200,
                   width: 10),
                 SizedBox(
                   height:150,
                   width:150,
                   child: ElevatedButton(
-                    style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.green)),
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(Color(0xFFFFE5B3)),
+                      shape: MaterialStateProperty.all<OutlinedBorder>(
+                        RoundedRectangleBorder(
+                          side: BorderSide(
+                            color: Colors.deepOrange,
+                          ),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      elevation: MaterialStateProperty.all<double>(0),
+                    ),
                     onPressed: ()async{
                     await FirebaseAuth.instance.signOut();
                     FirebaseAuth.instance
@@ -125,7 +161,11 @@ class _homescreenState extends State<homescreen> {
                       }
                     });
                   },
-                    child: Text('Logout'),
+                    child: Text(
+                        style: TextStyle(
+                          color: Colors.deepOrange,
+                        ),
+                        'Logout'),
                   ),
                 ),
 
