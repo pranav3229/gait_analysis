@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_svg/svg.dart';
 import 'firebase_options.dart';
 import 'homescreen.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
@@ -69,6 +70,7 @@ class _MyHomePageState extends State<MyHomePage> {
     super.dispose();
   }
   bool yeet=false;
+  bool _obscureText = true;
 
 
   @override
@@ -76,12 +78,13 @@ class _MyHomePageState extends State<MyHomePage> {
 
 
     return Scaffold(
-      appBar: AppBar(
-
-        centerTitle: true,
-        backgroundColor: Colors.green,
-        title: Text('Login'),
-      ),
+      backgroundColor: Color(0xFFFFE5B4),
+      // appBar: AppBar(
+      //
+      //   centerTitle: true,
+      //   backgroundColor: Colors.green,
+      //   title: Text('Login'),
+      // ),
       body: Center(
 
 
@@ -92,76 +95,117 @@ class _MyHomePageState extends State<MyHomePage> {
 
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              TextField(
-                controller: username,
-                keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(hintText: 'Enter the username'),
-              ),
-              TextField(
-                obscureText: true,
-                controller: password,
-                decoration: InputDecoration(hintText: 'Enter the password'),
+              // SvgPicture.asset(
+              //   'lib/assets/logo.svg',
+              //   width: 200,
+              //   height: 200,
+              // ),
+              Image(
+                image: AssetImage('lib/assets/logo.png'),
+                height:200,
+                width:200,
               ),
               SizedBox(height:50),
-              // FloatingActionButton(onPressed: () async{
-              //
-              // },
-              //   tooltip: 'Sign In',
-              //   child: const Icon(Icons.login),
-              // )
-              SizedBox(
-                width:140,
-                height: 45,
+              Container(
+                  color: Colors.white,
+                height: 316,
+                width: 318,
+                child: Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
 
-                child: ElevatedButton(
-                  style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.green)),
-                    onPressed: ()async{
-                    setState(() {
-                      yeet=true;
-                    });
+                      TextField(
+                        controller: username,
+                        keyboardType: TextInputType.emailAddress,
+                        decoration: InputDecoration(hintText: 'Enter the username'),
+                      ),
+                      // TextField(
+                      //   obscureText: true,
+                      //   controller: password,
+                      //   decoration: InputDecoration(hintText: 'Enter the password'),
+                      // ),
+                      TextField(
+                        obscureText: _obscureText,
+                        controller: password,
+                        decoration: InputDecoration(
+                          hintText: 'Enter the password',
+                          suffixIcon: IconButton(
+                            icon: Icon(_obscureText ? Icons.visibility : Icons.visibility_off),
+                            onPressed: () {
+                              setState(() {
+                                _obscureText = !_obscureText;
+                              });
+                            },
+                          ),
+                        ),
+                      ),
+                      SizedBox(height:50),
+                      // FloatingActionButton(onPressed: () async{
+                      //
+                      // },
+                      //   tooltip: 'Sign In',
+                      //   child: const Icon(Icons.login),
+                      // )
+                      SizedBox(
+                        width:211,
+                        height: 56,
+
+                        child: ElevatedButton(
+                            style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.deepOrangeAccent)),
+                            onPressed: ()async{
+                              setState(() {
+                                yeet=true;
+                              });
 
 
-                  try {
-                    final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
-                        email: username.text,
-                        password: password.text,
-                    );
+                              try {
+                                final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+                                  email: username.text,
+                                  password: password.text,
+                                );
 
 
 
 
-                    FirebaseAuth.instance
-                        .userChanges()
-                        .listen((User? user) {
-                      if (user == null) {
-                        print('User is currently signed out!');
-                      } else {
-                        Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    homescreen()));
-                        // !!!!! Here you know the user is signed-in !!!!!
-                        print('User is signed in!');
-                      }
-                    });
+                                FirebaseAuth.instance
+                                    .userChanges()
+                                    .listen((User? user) {
+                                  if (user == null) {
+                                    print('User is currently signed out!');
+                                  } else {
+                                    Navigator.of(context).pushReplacement(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                homescreen()));
+                                    // !!!!! Here you know the user is signed-in !!!!!
+                                    print('User is signed in!');
+                                  }
+                                });
 
-                  } on FirebaseAuthException catch (e) {
-                    if (e.code == 'user-not-found') {
-                      print('No user found for that email.');
-                    } else if (e.code == 'wrong-password') {
-                      print('Wrong password provided for that user.');
-                    }
-                  }
+                              } on FirebaseAuthException catch (e) {
+                                if (e.code == 'user-not-found') {
+                                  print('No user found for that email.');
+                                } else if (e.code == 'wrong-password') {
+                                  print('Wrong password provided for that user.');
+                                }
+                              }
 
-                },
+                            },
 
-                    child: const Icon(Icons.login)),
+                            child: const Text('Login')),
 
+                      ),
+                      SizedBox(height:20),
+                      Visibility(
+                          visible: yeet,
+                          child: CircularProgressIndicator())
+                    ],
+                  ),
+                )
               ),
-              SizedBox(height:20),
-              Visibility(
-                visible: yeet,
-                  child: CircularProgressIndicator())
+
 
 
 
