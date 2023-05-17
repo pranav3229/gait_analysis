@@ -54,6 +54,7 @@ dependencies:
   flutter_ffmpeg: ^0.4.2
   flutter_svg: ^1.1.6
 
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

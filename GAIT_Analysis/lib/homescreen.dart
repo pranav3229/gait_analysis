@@ -152,7 +152,7 @@ class _homescreenState extends State<homescreen> {
                         Navigator.of(context).pushReplacement(
                             MaterialPageRoute(
                                 builder: (context) =>
-                                    MyHomePage(title: 'yeet')));
+                                    MyHomePage(title: 'next page')));
                         print('User is currently signed out!');
                       } else {
 

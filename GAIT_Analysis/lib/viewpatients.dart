@@ -266,7 +266,8 @@ class _patientviewState extends State<patientview> {
                                       text_height,
                                       text_phone,
                                       text_profurl,
-                                      text_weight)));
+                                      text_weight,
+                                  )));
                         },
                         child: Card(
                           child: Center(

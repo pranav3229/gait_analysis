@@ -10,6 +10,7 @@ class VideoPlayerPage extends StatefulWidget {
   late String text_id;
   late String video_id;
   late String text_name;
+  // late String report_url;
 
   // const VideoPlayerPage({Key? key, required this.videoUrl}) : super(key: key);
   VideoPlayerPage(this.videoUrl, this.text_id,  this.video_id,this.text_name);
@@ -23,6 +24,7 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
   late String text_id;
   late String video_id;
   late String text_name;
+  late String report_url;
   late VideoPlayerController _controller;
   bool _isPlaying = false;
   _VideoPlayerPageState(this.videoUrl, this.text_id,this.video_id,this.text_name);
@@ -41,6 +43,7 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
     _controller.dispose();
     super.dispose();
   }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -117,9 +120,28 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
                   SizedBox(width: 30),
                   ElevatedButton(
                       onPressed: ()async{
+                        try {
+                          DocumentReference docRef2 = FirebaseFirestore.instance
+                              .collection('patients')
+                              .doc(text_id)
+                              .collection('videos')
+                              .doc(video_id);
+
+                          DocumentSnapshot snapshot = await docRef2.get();
+
+                          if (snapshot.exists) {
+                            report_url = snapshot.get('report_url');
+                            print('Report URL: $report_url');
+                            // Do something with the reportUrl value
+                          } else {
+                            print('Document does not exist');
+                          }
+                        } catch (e) {
+                          print('Error accessing report_url: $e');
+                        }
                         Navigator.of(context).pushReplacement(
                           MaterialPageRoute(
-                            builder: (context) => viewreports(text_id,videoUrl,video_id,text_name),
+                            builder: (context) => ViewReports(text_id,videoUrl,video_id,text_name,report_url),
                           ),
                         );
 

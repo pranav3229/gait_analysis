@@ -1,33 +1,45 @@
-// import 'package:firebase/firebase.dart';
 import 'package:flutter/material.dart';
 import 'package:gait_analysis/videoplayerpage.dart';
-class viewreports extends StatefulWidget {
-  // const viewreports({Key? key}) : super(key: key);
-  late String text_id;
-  late String videoUrl;
-  late String video_id;
-  late String text_name;
-  viewreports(this.text_id,this.videoUrl,this.video_id,this.text_name);
+
+class ViewReports extends StatefulWidget {
+  final String textId;
+  final String videoUrl;
+  final String videoId;
+  final String textName;
+  final String reportUrl;
+
+  ViewReports(
+      this.textId, this.videoUrl, this.videoId, this.textName, this.reportUrl);
+
   @override
-  State<viewreports> createState() => _viewreportsState(this.text_id, this.videoUrl,this.video_id,this.text_name);
+  _ViewReportsState createState() => _ViewReportsState();
 }
 
-class _viewreportsState extends State<viewreports> {
-  late String text_id;
-  late String videoUrl;
-  late String video_id;
-  late String text_name;
-  _viewreportsState(this.text_id,this.videoUrl,this.video_id,this.text_name);
+class _ViewReportsState extends State<ViewReports> {
+  final TransformationController _transformationController =
+  TransformationController();
+
+  void _resetImage() {
+    _transformationController.value = Matrix4.identity();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: BackButton(
-            onPressed: () {
-              Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (context) => VideoPlayerPage(videoUrl,text_id,video_id,text_name)));
-            },
-            color: Colors.black),
+          onPressed: () {
+            Navigator.of(context).pushReplacement(MaterialPageRoute(
+              builder: (context) => VideoPlayerPage(
+                widget.videoUrl,
+                widget.textId,
+                widget.videoId,
+                widget.textName,
+              ),
+            ));
+          },
+          color: Colors.black,
+        ),
         centerTitle: true,
         backgroundColor: Colors.green,
         title: Text('View Reports'),
@@ -37,76 +49,39 @@ class _viewreportsState extends State<viewreports> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(height: 20),
-            Text(" Name: ${text_name}"),
+            Text(" Name: ${widget.textName}"),
             SizedBox(width: 20),
-            Text("Patient ID: ${text_id}"),
-            SizedBox(height: 30),
-            Container(
-              height: 600,
-              width: 368,
-              alignment: Alignment.topLeft,
-              padding: EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                border: Border.all(width: 5, color: Colors.green),
-              ),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      Container(
-                height: 170,
-                width: 175,
+            Text("Patient ID: ${widget.textId}"),
+            SizedBox(height: 80),
+            Text("You can use your fingers to zoom in"),
+            SizedBox(height: 80),
+            InteractiveViewer(
+              transformationController: _transformationController,
+              minScale: 0.5,
+              maxScale: 5.0,
+              boundaryMargin: EdgeInsets.all(double.infinity),
+              child: Container(
+                height: 300,
+                width: 368,
                 alignment: Alignment.topLeft,
                 padding: EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                      border: Border.all(width: 5, color: Colors.black),
-                      )
-
-                      ),
-                      Text('Corresponding Graph text'),
-                    ],
-                  ),
-                  SizedBox(height:20),
-                  Row(
-                    children: [
-                      Container(
-                          height: 170,
-                          width: 175,
-                          alignment: Alignment.topLeft,
-                          padding: EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            border: Border.all(width: 5, color: Colors.black),
-                          )
-
-                      ),
-                      Text('Corresponding Graph text'),
-                    ],
-                  ),
-                  SizedBox(height:20),
-                  Row(
-                    children: [
-                      Container(
-                          height: 170,
-                          width: 175,
-                          alignment: Alignment.topLeft,
-                          padding: EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            border: Border.all(width: 5, color: Colors.black),
-                          )
-
-                      ),
-                      Text('Corresponding Graph text'),
-                    ],
-                  )
-                ],
-              )
+                  border: Border.all(width: 5, color: Colors.green),
+                ),
+                child: Image.network(
+                  widget.reportUrl,
+                  fit: BoxFit.contain,
+                ),
+              ),
             ),
-            SizedBox(height:20),
-
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: _resetImage,
+              child: Text('Reset Image'),
+            ),
           ],
-
         ),
-      )
+      ),
     );
   }
 }

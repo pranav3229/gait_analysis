@@ -21,6 +21,7 @@ class patientprofile extends StatefulWidget {
   late String text_phone;
   late String text_profurl;
   late String text_weight;
+  // late String report_url;
   patientprofile(this.text_name, this.text_id, this.text_dob, this.text_gender,
       this.text_height, this.text_phone, this.text_profurl, this.text_weight);
 
@@ -33,7 +34,8 @@ class patientprofile extends StatefulWidget {
       this.text_height,
       this.text_phone,
       this.text_profurl,
-      this.text_weight);
+      this.text_weight,
+  );
 }
 
 class _patientprofileState extends State<patientprofile> {
@@ -45,6 +47,7 @@ class _patientprofileState extends State<patientprofile> {
   late String text_phone;
   late String text_profurl;
   late String text_weight;
+  // late String report_url;
 
   _patientprofileState(
       this.text_name,
@@ -54,7 +57,10 @@ class _patientprofileState extends State<patientprofile> {
       this.text_height,
       this.text_phone,
       this.text_profurl,
-      this.text_weight);
+      this.text_weight,
+      // this.report_url,
+
+      );
   String videoUrl = '';
 
   @override
@@ -64,7 +70,7 @@ class _patientprofileState extends State<patientprofile> {
           leading: BackButton(
               onPressed: () {
                 Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (context) => homescreen()));
+                    MaterialPageRoute(builder: (context) => patientview()));
               },
               color: Colors.black),
           centerTitle: true,

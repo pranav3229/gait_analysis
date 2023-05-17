@@ -84,6 +84,7 @@ class PreviewPageState extends State<PreviewPage> {
   late String text_profurl;
   late String text_weight;
   late String text_name;
+  late String report_url;
 
   PreviewPageState(
       this.filePath,
@@ -111,6 +112,35 @@ class PreviewPageState extends State<PreviewPage> {
     final downloadUrl = await snapshot.ref.getDownloadURL();
     print('Download URL: $downloadUrl');
     logurl = downloadUrl;
+
+    //code for report url fetch begins here
+    try {
+      final url = 'http://gaitanalysis.bits-pilani.ac.in/finalframe';
+      http.Response response = await http.get(Uri.parse(url));
+
+      if (response.statusCode == 200) {
+        // Image data is available in response.bodyBytes
+        final imageData = response.bodyBytes;
+        final reference2 = FirebaseStorage.instance
+            .ref()
+            .child("reports/${desiredName + now.toString()}");
+        final uploadTask2 = reference2.putData(imageData);
+        final snapshot =
+        await uploadTask2.whenComplete(() => print('report uploaded'));
+        final downloadUrl2 = await snapshot.ref.getDownloadURL();
+        print('Report URL: $downloadUrl2');
+        report_url=downloadUrl2;
+        // Save the image to a file
+        // File imageFile = File('path/to/save/finalframe.jpg');
+        // await imageFile.writeAsBytes(imageData);
+
+        print('Final frame image downloaded successfully!');
+      } else {
+        print('Error fetching final frame image: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error fetching final frame image: $e');
+    }
     addCollectionAndDocument();
   }
 
@@ -163,6 +193,7 @@ class PreviewPageState extends State<PreviewPage> {
     await collectionRef.add({
       'url': '${logurl}',
       'date_created': now,
+      'report_url': '${report_url}'
     });
   }
 
@@ -224,7 +255,8 @@ class PreviewPageState extends State<PreviewPage> {
                       text_height,
                       text_phone,
                       text_profurl,
-                      text_weight)));
+                      text_weight,
+                  )));
             },
           )
         ],
