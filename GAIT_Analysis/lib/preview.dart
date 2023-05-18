@@ -166,7 +166,7 @@ class PreviewPageState extends State<PreviewPage> {
       // check response status code
       if (response.statusCode == 200) {
         print('Video sent successfully!');
-        uploadVideo('http://103.144.92.62/download', text_id);
+        uploadVideo('http://gaitanalysis.bits-pilani.ac.in/download', text_id);
         print(response.statusCode);
       } else {
         print(
@@ -244,7 +244,7 @@ class PreviewPageState extends State<PreviewPage> {
           IconButton(
             icon: const Icon(Icons.check),
             onPressed: () async {
-              sendVideo("http://103.144.92.62/success", File(filePath));
+              sendVideo("http://gaitanalysis.bits-pilani.ac.in/success", File(filePath));
 
               Navigator.of(context).pushReplacement(MaterialPageRoute(
                   builder: (context) => patientprofile(
