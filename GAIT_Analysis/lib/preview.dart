@@ -157,6 +157,7 @@ class PreviewPageState extends State<PreviewPage> {
           'Accept': "*/*",
           'Content-Length': videoFile.lengthSync().toString(),
           'Connection': 'keep-alive',
+
           'Accept-Encoding': 'gzip, deflate, br',
           'Content-Type': 'video/mp4'
         },

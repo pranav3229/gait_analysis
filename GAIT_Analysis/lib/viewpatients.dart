@@ -192,7 +192,7 @@ class _patientviewState extends State<patientview> {
                         MaterialPageRoute(builder: (context) => homescreen()));
                   },
                   color: Colors.white),
-              backgroundColor: Colors.green,
+              backgroundColor: Colors.deepOrange,
               actions: !_searchBoolean
                   ? [
                       IconButton(
@@ -269,20 +269,55 @@ class _patientviewState extends State<patientview> {
                                       text_weight,
                                   )));
                         },
-                        child: Card(
-                          child: Center(
-                            child: Column(
-                              children: [
-                                SizedBox(height: 15),
-                                Text(document['name']),
-                                SizedBox(height: 25),
-                                Text('Phone number: ${document['phone']}'),
-                                SizedBox(height: 25),
-                                Text('ID: ${document.id}'),
-                              ],
+                        child: Column(
+                          children: [
+                            Container(
+                              width: 300,
+                              decoration: BoxDecoration(
+                                color: Color(0xFFFFE5B4),
+                                borderRadius: BorderRadius.circular(10), // Adjust the radius as needed
+                              ),
+                              child: Row(
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.all(10),
+                                    child: CircleAvatar(
+                                      backgroundImage: NetworkImage('${document['profile picture URL']}'), // Replace with the actual image URL
+                                      radius: 30, // Adjust the radius as needed
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        SizedBox(height: 15),
+                                        Text(
+                                          document['name'],
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 18,
+                                          ),
+                                        ),
+                                        SizedBox(height: 10),
+                                        Text(
+                                          'Phone number: ${document['phone']}',
+                                          style: TextStyle(fontSize: 16),
+                                        ),
+                                        SizedBox(height: 10),
+                                        Text(
+                                          'ID: ${document.id}',
+                                          style: TextStyle(fontSize: 16),
+                                        ),
+                                        SizedBox(height: 10),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                        ),
+                          ],
+                        )
+
                       ),
                     ),
                   );
