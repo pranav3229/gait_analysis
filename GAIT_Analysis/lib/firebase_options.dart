@@ -54,6 +54,7 @@ class DefaultFirebaseOptions {
     appId: '1:1096229276091:android:af4af0f959ea1cbd911c9e',
     messagingSenderId: '1096229276091',
     projectId: 'gait-analysis-8a05a',
+    databaseURL: 'https://gait-analysis-8a05a-default-rtdb.asia-southeast1.firebasedatabase.app',
     storageBucket: 'gait-analysis-8a05a.appspot.com',
   );
 
@@ -62,6 +63,7 @@ class DefaultFirebaseOptions {
     appId: '1:1096229276091:ios:267cf7e1b9a7d50c911c9e',
     messagingSenderId: '1096229276091',
     projectId: 'gait-analysis-8a05a',
+    databaseURL: 'https://gait-analysis-8a05a-default-rtdb.asia-southeast1.firebasedatabase.app',
     storageBucket: 'gait-analysis-8a05a.appspot.com',
     iosClientId: '1096229276091-24up40oqvhltf2cd3jb23c6lq8rjmcu7.apps.googleusercontent.com',
     iosBundleId: 'com.example.gaitAnalysis',

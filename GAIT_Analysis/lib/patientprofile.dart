@@ -66,22 +66,60 @@ class _patientprofileState extends State<patientprofile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
         appBar: AppBar(
-          leading: BackButton(
-              onPressed: () {
-                Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (context) => patientview()));
-              },
-              color: Colors.black),
+          leading: ElevatedButton(
+            style: ButtonStyle(
+                elevation: MaterialStateProperty.all(0),
+                backgroundColor: MaterialStateProperty.all<Color>(Colors.white)),
+            onPressed: () {
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (context) => patientview()),
+              );
+            },
+             child: Icon(Icons.arrow_back_ios,
+            color: Colors.black,
+          ),
+          ),
           centerTitle: true,
-          backgroundColor: Colors.green,
-          title: Text('Patient Profile'),
+          backgroundColor: Colors.white,
+          elevation: 0.0, // Set elevation to 0.0 to remove hovering
+          title: Text(
+            '${text_name}',
+            style: TextStyle(
+              color: Colors.black,
+            ),
+          ),
         ),
+
+
         body: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+
+              Container(
+                alignment: Alignment.topLeft,
+                padding: EdgeInsets.all(3),
+                // decoration: BoxDecoration(
+                //   border: Border.all(),
+                // ),
+                child: Align(
+                  alignment: Alignment.topLeft,
+                  child: Center(
+                    child: Text(
+                      'ID: ${text_id}',
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500, // Set fontWeight to bold
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+
+
               SizedBox(height: 50),
               Align(
                 alignment: Alignment.center,
@@ -96,9 +134,9 @@ class _patientprofileState extends State<patientprofile> {
                 child: Container(
                   alignment: Alignment.center,
                   padding: EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    border: Border.all(width: 5, color: Colors.green),
-                  ),
+                  // decoration: BoxDecoration(
+                  //   border: Border.all(width: 5, color: Colors.green),
+                  // ),
                   // child: const Text(
                   //   "FlutterBeads",
                   //   style: TextStyle(fontSize: 34.0),
@@ -111,20 +149,20 @@ class _patientprofileState extends State<patientprofile> {
                       // ),
                       Row(
                         children: [
-                          Container(
-                            alignment: Alignment.topLeft,
-                            padding: EdgeInsets.all(3),
-                            decoration: BoxDecoration(
-                              border: Border.all(),
-                            ),
-                            child: Align(
-                              alignment: Alignment.topLeft,
-                              child: Text(
-                                'ID: ${text_id}',
-                                style: TextStyle(fontSize: 15),
-                              ),
-                            ),
-                          ),
+                          // Container(
+                          //   alignment: Alignment.topLeft,
+                          //   padding: EdgeInsets.all(3),
+                          //   decoration: BoxDecoration(
+                          //     border: Border.all(),
+                          //   ),
+                          //   child: Align(
+                          //     alignment: Alignment.topLeft,
+                          //     child: Text(
+                          //       'ID: ${text_id}',
+                          //       style: TextStyle(fontSize: 15),
+                          //     ),
+                          //   ),
+                          // ),
                         ],
                       ),
                       SizedBox(height: 1),
@@ -133,17 +171,62 @@ class _patientprofileState extends State<patientprofile> {
                           Container(
                             alignment: Alignment.topLeft,
                             padding: EdgeInsets.all(3),
-                            decoration: BoxDecoration(
-                              border: Border.all(),
-                            ),
+                            // decoration: BoxDecoration(
+                            //   border: Border.all(),
+                            // ),
                             child: Align(
                               alignment: Alignment.topLeft,
-                              child: Text(
-                                'Name: ${text_name}',
-                                style: TextStyle(fontSize: 15),
+                              child: Center(
+                                child: Text(
+                                  'Name: ',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w300,
+                                      fontSize: 15
+                                  ),
+
+                                ),
                               ),
                             ),
                           ),
+                          // SizedBox(width:50),
+                          Container(
+                            alignment: Alignment.topLeft,
+                            padding: EdgeInsets.all(3),
+                            // decoration: BoxDecoration(
+                            //   border: Border.all(),
+                            // ),
+                            child: Align(
+                              alignment: Alignment.topLeft,
+                              child: Center(
+                                child: Text(
+                                  '${text_name}',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 15),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          // Container(
+                          //   alignment: Alignment.topLeft,
+                          //   padding: EdgeInsets.all(3),
+                          //   // decoration: BoxDecoration(
+                          //   //   border: Border.all(),
+                          //   // ),
+                          //   child: Align(
+                          //     alignment: Alignment.topLeft,
+                          //     child: Center(
+                          //       child: Text(
+                          //         '${text_name}',
+                          //         style: TextStyle(fontSize: 15),
+                          //       ),
+                          //     ),
+                          //   ),
+                          // ),
                         ],
                       ),
                       SizedBox(height: 1),
